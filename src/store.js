@@ -6,6 +6,7 @@ import {generateCode} from "./utils";
 class Store {
   constructor(initState = {}) {
     this.state = initState;
+    this.state.cart = [];
     this.listeners = []; // Слушатели изменений состояния
   }
 
@@ -41,48 +42,47 @@ class Store {
   }
 
   /**
-   * Добавление новой записи
+   * Добавление элемента в корзину
+   * @param item
    */
-  addItem() {
-    this.setState({
-      ...this.state,
-      list: [...this.state.list, {code: generateCode(), title: 'Новая запись'}]
-    })
-  };
-
-  /**
-   * Удаление записи по коду
-   * @param code
-   */
-  deleteItem(code) {
-    this.setState({
-      ...this.state,
-      // Новый список, в котором не будет удаляемой записи
-      list: this.state.list.filter(item => item.code !== code)
-    })
-  };
-
-  /**
-   * Выделение записи по коду
-   * @param code
-   */
-  selectItem(code) {
-    this.setState({
-      ...this.state,
-      list: this.state.list.map(item => {
-        if (item.code === code) {
-          // Смена выделения и подсчёт
-          return {
-            ...item,
-            selected: !item.selected,
-            count: item.selected ? item.count : item.count + 1 || 1,
-          };
-        }
-        // Сброс выделения если выделена
-        return item.selected ? {...item, selected: false} : item;
+  addCartItem(item) {
+    //Определяем, есть ли элемент в корзине
+    const isItemAdded = this.state.cart.some(el => el.code === item.code);
+    
+    //Если элемент в корзине уже есть - меняем количество товара для выбранного элемента
+    if (isItemAdded) {
+      this.setState({
+        ...this.state,
+        cart: this.state.cart.map(cartItem => {
+          if (cartItem.code === item.code) {
+            return {
+              ...cartItem,
+              count: cartItem.count + 1,
+            };
+          }
+          return cartItem;
+        })
       })
+    //Если переданного в аргументе товара нет в корзине - добавляем новый элемент в корзину с количеством 1
+    } else {
+      this.setState({
+        ...this.state,
+        cart: [...this.state.cart, {...item, count: 1}]
+      })
+    }
+  };
+
+  /**
+   * Удаление элемента из корзины
+   * @param code
+   */
+  deleteCartItem(code) {
+    this.setState({
+      ...this.state,
+      // Новый список элементов корзины, в котором не будет удаляемого элемента
+      cart: this.state.cart.filter(item => item.code !== code)
     })
-  }
+  };
 }
 
 export default Store;
