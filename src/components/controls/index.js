@@ -10,7 +10,11 @@ function Controls({onOpenCart, cartItemsAmount, cartItemsPrice}) {
         <p>В корзине:</p>
         <p>
           {cartItemsAmount > 0
-            ? `${cartItemsAmount} ${plural(cartItemsAmount, {one: "товар", few: "товара", many: "товаров"})} / ${cartItemsPrice} ₽`
+            ? `${cartItemsAmount} ${plural(cartItemsAmount, {
+                one: "товар",
+                few: "товара",
+                many: "товаров",
+              })} / ${cartItemsPrice.toLocaleString("ru")} ₽`
             : "пусто"}
         </p>
       </div>

@@ -24,7 +24,7 @@ function Cart(props) {
             ))}
             <div className='Cart-window_total-price'>
               <p>Итого</p>
-              <p>{props.cartItemsPrice} ₽</p>
+              <p>{props.cartItemsPrice.toLocaleString("ru")} ₽</p>
             </div>
           </div>
         ) : (

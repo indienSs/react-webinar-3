@@ -3,6 +3,7 @@ import List from "./components/list";
 import Controls from "./components/controls";
 import Head from "./components/head";
 import PageLayout from "./components/page-layout";
+import CartLayout from './components/cart-layout';
 import Cart from "./components/cart"
 
 /**
@@ -13,20 +14,19 @@ import Cart from "./components/cart"
 function App({store}) {
 
   const list = store.getState().list;
-  const cart = store.getState().cart;
+  const cart = list.filter(item => item.count > 0);
+  const totalPrice = store.getState().totalPrice;
 
   const [isCartOpened, setIsCartOpened] = useState(false);
 
-  const totalPrice = cart.reduce((acc, item) => (item.price * item.count + acc), 0)
-  
   const callbacks = {
 
     onOpenCart: () => {
       setIsCartOpened(prev => !prev)
     },
 
-    onDeleteCartItem: useCallback((code) => {
-      store.deleteCartItem(code);
+    onDeleteCartItem: useCallback((item) => {
+      store.deleteCartItem(item);
     }, [store]),
 
     onAddCartItem: useCallback((item) => {
@@ -35,19 +35,26 @@ function App({store}) {
   }
 
   return (
-    <PageLayout>
-      <Head title='Магазин'/>
-      <Controls onOpenCart={callbacks.onOpenCart}
-            cartItemsAmount={cart.length} 
-            cartItemsPrice={totalPrice}/>
-      <List list={list}
-            onAddCartItem={callbacks.onAddCartItem}/>
-      <Cart isOpened={isCartOpened}
-            onDeleteCartItem={callbacks.onDeleteCartItem}
-            cartItemsPrice={totalPrice}
-            cartList={cart}
-            onOpenCart={callbacks.onOpenCart}/>
-    </PageLayout>
+    <>
+      <PageLayout>
+        <Head title='Магазин'/>
+        <Controls onOpenCart={callbacks.onOpenCart}
+              cartItemsAmount={cart.length} 
+              cartItemsPrice={totalPrice}/>
+        <List list={list}
+              onAddCartItem={callbacks.onAddCartItem}/>
+      </PageLayout>
+      <CartLayout>
+        <List list={cart}
+              onDeleteCartItem={callbacks.onDeleteCartItem}/>
+        <Cart isOpened={isCartOpened}
+              onDeleteCartItem={callbacks.onDeleteCartItem}
+              cartItemsPrice={totalPrice}
+              cartList={cart}
+              onOpenCart={callbacks.onOpenCart}/>
+      </CartLayout>
+    </>
+    
   );
 }
 

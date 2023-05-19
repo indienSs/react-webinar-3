@@ -5,7 +5,7 @@ import "./style.css";
 function CartItem({cartItem, onDeleteCartItem}) {
   const callbacks = {
     onDelete: () => {
-      onDeleteCartItem(cartItem.code);
+      onDeleteCartItem(cartItem);
     },
   };
 
@@ -17,7 +17,7 @@ function CartItem({cartItem, onDeleteCartItem}) {
       </div>
       <div className='CartItem-details'>
         <div className='CartItem-details__price'>
-          <p>{`${cartItem.price} ₽`}</p>
+          <p>{`${cartItem.price.toLocaleString("ru")} ₽`}</p>
           <p>{`${cartItem.count} шт`}</p>
         </div>
         <div className='CartItem-details__actions'>

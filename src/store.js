@@ -6,7 +6,10 @@ import {generateCode} from "./utils";
 class Store {
   constructor(initState = {}) {
     this.state = initState;
-    this.state.cart = [];
+    //Добавляем всем товарам count = 0 для обозначения изначального количества товара в корзине
+    this.state.list = this.state.list.map(item => ({...item, count: 0}));
+    //Объявляем переменную итоговой цены товара в store (требование правки)
+    this.state.totalPrice = 0;
     this.listeners = []; // Слушатели изменений состояния
   }
 
@@ -46,41 +49,43 @@ class Store {
    * @param item
    */
   addCartItem(item) {
-    //Определяем, есть ли элемент в корзине
-    const isItemAdded = this.state.cart.some(el => el.code === item.code);
+    //Инкрементируем количество добавленного товара в корзину
+    this.setState({
+      ...this.state,
+      //Прибавляем к итоговой цене цену 1 единицы добавленного товара
+      totalPrice: this.state.totalPrice + item.price,
+      list: this.state.list.map(storeItem => {
+        if (storeItem.code === item.code) {
+          return {
+            ...storeItem,
+            count: storeItem.count + 1,
+          };
+        }
+        return storeItem;
+      }),
+    })
     
-    //Если элемент в корзине уже есть - меняем количество товара для выбранного элемента
-    if (isItemAdded) {
-      this.setState({
-        ...this.state,
-        cart: this.state.cart.map(cartItem => {
-          if (cartItem.code === item.code) {
-            return {
-              ...cartItem,
-              count: cartItem.count + 1,
-            };
-          }
-          return cartItem;
-        })
-      })
-    //Если переданного в аргументе товара нет в корзине - добавляем новый элемент в корзину с количеством 1
-    } else {
-      this.setState({
-        ...this.state,
-        cart: [...this.state.cart, {...item, count: 1}]
-      })
-    }
   };
 
   /**
    * Удаление элемента из корзины
-   * @param code
+   * @param item
    */
-  deleteCartItem(code) {
+  deleteCartItem(item) {
     this.setState({
       ...this.state,
-      // Новый список элементов корзины, в котором не будет удаляемого элемента
-      cart: this.state.cart.filter(item => item.code !== code)
+      //Отнимаем от итоговой цены цену удаленного из корзины товара
+      totalPrice: this.state.totalPrice - item.price * item.count,
+      //При удалении элемента из корзины сбрасываем количество товара в корзине
+      list: this.state.list.map(storeItem => {
+        if (storeItem.code === item.code) {
+          return {
+            ...storeItem,
+            count: 0,
+          };
+        }
+        return storeItem;
+      })
     })
   };
 }
