@@ -6,11 +6,11 @@ import "./style.css";
 function List({list, onAddCartItem, onDeleteCartItem}) {
   return (
     <div className='List'>
-      {list.map(item => (
+      {list.length > 0 ? list.map(item => (
         <div key={item.code} className='List-item'>
           <Item item={item} onAddCartItem={onAddCartItem} onDeleteCartItem={onDeleteCartItem} />
         </div>
-      ))}
+      )) : <div className='List-item-empty'>Пусто</div>}
     </div>
   );
 }

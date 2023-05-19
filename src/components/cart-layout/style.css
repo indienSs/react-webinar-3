@@ -1,15 +1,29 @@
-/* body {
-  margin: 0;
-  padding: 0;
-  background: #535353;
-  font-family: sans-serif;
+.CartLayout {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
 }
 
-.CartLayout {
-  max-width: 1024px;
-  min-height: 100vh;
-  margin: 0 auto;
-  background: #fff;
-  box-sizing: border-box;
-  box-shadow: 0 0 15px 5px #0000003b;
-} */
+.CartLayout-hidden {
+  display: none;
+}
+
+.CartLayout-window {
+  width: 900px;
+  min-height: 200px;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.CartLayout-window__list {
+  padding: 40px 0;
+}

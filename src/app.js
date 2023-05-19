@@ -4,7 +4,7 @@ import Controls from "./components/controls";
 import Head from "./components/head";
 import PageLayout from "./components/page-layout";
 import CartLayout from './components/cart-layout';
-import Cart from "./components/cart"
+import Footer from './components/footer';
 
 /**
  * Приложение
@@ -44,14 +44,14 @@ function App({store}) {
         <List list={list}
               onAddCartItem={callbacks.onAddCartItem}/>
       </PageLayout>
-      <CartLayout>
+      <CartLayout isOpened={isCartOpened}
+            onOpenCart={callbacks.onOpenCart}>
+        <Head title='Корзина'
+              button='Закрыть'
+              onOpenCart={callbacks.onOpenCart}/>
         <List list={cart}
               onDeleteCartItem={callbacks.onDeleteCartItem}/>
-        <Cart isOpened={isCartOpened}
-              onDeleteCartItem={callbacks.onDeleteCartItem}
-              cartItemsPrice={totalPrice}
-              cartList={cart}
-              onOpenCart={callbacks.onOpenCart}/>
+        <Footer totalPrice={totalPrice}/>
       </CartLayout>
     </>
     

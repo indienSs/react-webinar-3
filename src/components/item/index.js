@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import "./style.css";
 
 function Item({item, onAddCartItem, onDeleteCartItem}) {
+  
   const callbacks = {
     onAdd: () => {
       onAddCartItem(item);
@@ -16,15 +17,15 @@ function Item({item, onAddCartItem, onDeleteCartItem}) {
   return (
     <div className='Item'>
       <div className='Item-code'>{item.code}</div>
-      <div className='Item-title'>{item.title}</div>
-      {onAddCartItem && <div className='Item-actions'>
-        <p>{`${item.price.toLocaleString("ru")} ₽`}</p>
-        <button onClick={callbacks.onAdd}>Добавить</button>
-      </div>}
-      {onDeleteCartItem && <div className='Item-actions'>
-        <p>{`${item.price.toLocaleString("ru")} ₽`}</p>
-        <p>{`${item.count} шт`}</p>
-        <button onClick={callbacks.onDelete}>Удалить</button>
+        <div className='Item-title'>{item.title}</div>
+        {onAddCartItem && <div className='Item-actions'>
+          <p className='Item-actions__price'>{`${item.price.toLocaleString("ru")} ₽`}</p>
+          <button onClick={callbacks.onAdd}>Добавить</button>
+        </div>}
+        {onDeleteCartItem && <div className='Item-actions'>
+          <p className='Item-actions__price'>{`${item.price.toLocaleString("ru")} ₽`}</p>
+          <p className='Item-actions__count'>{`${item.count} шт`}</p>
+          <button onClick={callbacks.onDelete}>Удалить</button>
       </div>}
     </div>
   );

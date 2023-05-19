@@ -20,8 +20,14 @@
   padding-right: 20px;
 }
 
-.Item-actions p {
-  margin-right: 30px;
+.Item-actions__price {
+  padding-right: 30px;
   text-align: end;
   width: 100px;
+}
+
+.Item-actions__count {
+  padding-right: 30px;
+  text-align: end;
+  width: 50px;
 }
