@@ -2,11 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import './style.css';
 
-function Head(props){
+function Head({button, onOpenCart, title}){
   return (
     <div className='Head'>
-      <h1>{props.title}</h1>
-      {props.button && <button onClick={props.onOpenCart}>{props.button}</button>}
+      <h1>{title}</h1>
+      {button && <button onClick={onOpenCart}>{button}</button>}
     </div>
   )
 }

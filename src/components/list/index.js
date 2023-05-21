@@ -21,8 +21,8 @@ List.propTypes = {
       code: PropTypes.number,
     })
   ).isRequired,
-  onAddCartItem: PropTypes.func,
-  onDeleteCartItem: PropTypes.func,
+  onAddCartItem: PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf([null])]),
+  onDeleteCartItem: PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf([null])]),
 };
 
 List.defaultProps = {

@@ -4,7 +4,7 @@ import "./style.css";
 
 function Footer({totalPrice}) {
   if (totalPrice <= 0) {
-    return <> </>;
+    return;
   }
 
   return (
@@ -16,7 +16,7 @@ function Footer({totalPrice}) {
 }
 
 Footer.propTypes = {
-  title: PropTypes.number,
+  totalPrice: PropTypes.number,
 };
 
 export default Footer;

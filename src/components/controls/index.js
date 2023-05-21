@@ -22,7 +22,7 @@ function Controls({onOpenCart, cartItemsAmount, cartItemsPrice}) {
           </>
         )}
       </div>
-      {onOpenCart && <button onClick={() => onOpenCart()}>Перейти</button>}
+      <button onClick={() => onOpenCart()}>Перейти</button>
     </div>
   );
 }
@@ -30,11 +30,11 @@ function Controls({onOpenCart, cartItemsAmount, cartItemsPrice}) {
 Controls.propTypes = {
   cartItemsAmount: PropTypes.number,
   cartItemsPrice: PropTypes.number,
-  onOpenCart: PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf([null])]),
+  onOpenCart: PropTypes.func,
 };
 
 Controls.defaultProps = {
-  onOpenCart: null,
+  onOpenCart: () => {},
 };
 
 export default React.memo(Controls);
