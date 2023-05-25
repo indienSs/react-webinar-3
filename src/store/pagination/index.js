@@ -23,13 +23,14 @@ class Pagination extends StoreModule {
   
   /**
    * Установка количества доступных страниц
-   * @param itemsCount общее количество товара в каталоге
    */
-  setTotalPages(itemsCount) {
+  async setTotalPages() {
+    const response = await fetch(`/api/v1/articles?fields=items(_id, title, price),count`);
+    const json = await response.json();
     this.setState({
       ...this.getState(),
-      totalPages: Math.ceil(itemsCount / this.getState().itemsPerPage),
-    }, 'Установка количества доступных страниц');
+      totalPages: Math.floor(json.result.count / this.getState().itemsPerPage),
+    }, `Установка количества доступных страниц для пагинации`);
   }
 }
 

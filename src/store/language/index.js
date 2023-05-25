@@ -9,7 +9,7 @@ class Language extends StoreModule {
   }
 
   setLanguage(lang){
-    this.setState({language: lang}, `Смена языка на ${lang}`);
+    this.setState({language: lang}, `Язык приложения - ${lang}`);
   }
 
 }

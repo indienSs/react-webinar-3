@@ -11,11 +11,12 @@ import PaginationButtons from '../../components/pagination-buttons';
 function Main() {
 
   const store = useStore();
-  const [pageNumber, setPageNumber] = useState(0)
+
+  const pageNumber = useSelector(state => state.pagination.currentPage)
 
   useEffect(() => {
     store.actions.catalog.load(pageNumber);
-  }, []);
+  }, [pageNumber]);
 
   const select = useSelector(state => ({
     list: state.catalog.list,
