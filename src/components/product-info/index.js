@@ -1,23 +1,26 @@
 import {memo} from "react";
 import PropTypes from "prop-types";
-import {cn as bem} from '@bem-react/classname';
-import './style.css';
+import {numberFormat} from "../../utils";
+import {cn as bem} from "@bem-react/classname";
+import "./style.css";
 
 function ProductInfo({productInfo, onAddItem}) {
-
-  const cn = bem('ProductInfo');
+  
+  const cn = bem("ProductInfo");
 
   const callbacks = {
-    onAdd: (e) => onAddItem(productInfo._id)
-  }
+    onAdd: e => onAddItem(productInfo._id),
+  };
 
   return (
     <div className={cn()}>
       <p>{productInfo.description}</p>
-      <p>Страна производитель: {productInfo.madeIn?.title} ({productInfo.madeIn?.code})</p>
-      <p>Категория: {productInfo.category?.title}</p>
-      <p>Год выпуска: {productInfo.edition}</p>
-      <p>Цена: {productInfo.price}</p>
+      <div className={cn("details")}>
+        Страна производитель: <p>{productInfo.madeIn?.title} ({productInfo.madeIn?.code})</p>
+      </div>
+      <div className={cn("details")}>Категория: <p>{productInfo.category?.title}</p></div>
+      <div className={cn("details")}>Год выпуска: <p>{productInfo.edition}</p></div>
+      <h3>Цена: {numberFormat(productInfo.price)} ₽</h3>
       <button onClick={callbacks.onAdd}>Добавить</button>
     </div>
   );
@@ -40,10 +43,10 @@ ProductInfo.propTypes = {
     }),
   }).isRequired,
   onAddItem: PropTypes.func,
-}
+};
 
 ProductInfo.defaultProps = {
   onAddItem: () => {},
-}
+};
 
 export default memo(ProductInfo);

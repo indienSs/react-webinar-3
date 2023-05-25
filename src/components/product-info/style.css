@@ -8,3 +8,14 @@ body {
 .ProductInfo {
   margin: 20px 40px;
 }
+
+.ProductInfo-details {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 40px;
+}
+
+.ProductInfo-details p {
+  font-weight: 700;
+}

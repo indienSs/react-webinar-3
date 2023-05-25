@@ -11,18 +11,12 @@ function About() {
 
   const store = useStore();
   const {id} = useParams();
-  const [productInfo, setProductInfo] = useState({});
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function getProductInfo() {
-      const response = await fetch(`/api/v1/articles/${id}?fields=*,madeIn(title,code),category(title)`);
-      const json = await response.json();
-      setProductInfo(json.result);
-    };
-    getProductInfo();
-    setLoading(false);
-  }, [loading]);
+    store.actions.product.load(id);
+  }, [id]);
+
+  const productInfo = useSelector(state => ({product: state.product.product}))
 
   const select = useSelector(state => ({
     list: state.catalog.list,
@@ -39,10 +33,10 @@ function About() {
 
   return (
     <PageLayout>
-      <Head title={productInfo.title}/>
+      <Head title={productInfo.product.title}/>
       <BasketTool onOpen={callbacks.openModalBasket} amount={select.amount}
                   sum={select.sum}/>
-      <ProductInfo productInfo={productInfo} onAddItem={callbacks.addToBasket}/>
+      <ProductInfo productInfo={productInfo.product} onAddItem={callbacks.addToBasket}/>
     </PageLayout>
 
   );

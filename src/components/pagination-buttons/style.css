@@ -1,0 +1,7 @@
+/* Кнопки пагинации */
+.PaginationButtons {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px;
+}
+
