@@ -15,12 +15,16 @@ class Catalog extends StoreModule {
   }
 
   async load(page) {
-    const response = await fetch(`/api/v1/articles?limit=10&skip=${page * 10}`);
-    const json = await response.json();
-    this.setState({
-       ...this.getState(),
-       list: json.result.items
-    }, 'Загружены товары из АПИ');
+    try {
+      const response = await fetch(`/api/v1/articles?limit=10&skip=${page * 10}`);
+      const json = await response.json();
+      this.setState({
+        ...this.getState(),
+        list: json.result.items
+      }, 'Загружены товары из АПИ');
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 

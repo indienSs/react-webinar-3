@@ -4,7 +4,7 @@ class Language extends StoreModule {
 
   initState() {
     return {
-      language: "ru"
+      language: "ru-RU"
     }
   }
 

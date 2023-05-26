@@ -5,11 +5,14 @@ import {cn as bem} from "@bem-react/classname";
 import PropTypes from "prop-types";
 import {Link} from 'react-router-dom';
 import useStore from '../../store/use-store';
+import {translateWord} from '../../utils';
+import useSelector from '../../store/use-selector';
 import './style.css';
 
 function ItemBasket(props) {
 
   const store = useStore();
+  const selectedLanguage = useSelector(state => state.language.language);
 
   const cn = bem('ItemBasket');
 
@@ -29,8 +32,8 @@ function ItemBasket(props) {
       </div>
       <div className={cn('right')}>
         <div className={cn('cell')}>{numberFormat(props.item.price)} ₽</div>
-        <div className={cn('cell')}>{numberFormat(props.item.amount || 0)} шт</div>
-        <div className={cn('cell')}><button onClick={callbacks.onRemove}>Удалить</button></div>
+        <div className={cn('cell')}>{numberFormat(props.item.amount || 0)} {selectedLanguage === "ru-RU" ? "шт" : ""}</div>
+        <div className={cn('cell')}><button onClick={callbacks.onRemove}>{translateWord("Удалить", selectedLanguage)}</button></div>
       </div>
     </div>
   )

@@ -1,9 +1,13 @@
 import {memo, useEffect, useRef} from "react";
 import PropTypes from "prop-types";
 import {cn as bem} from '@bem-react/classname';
+import useSelector from "../../store/use-selector";
+import {translateWord} from "../../utils";
 import './style.css';
 
 function ModalLayout(props) {
+
+  const selectedLanguage = useSelector(state => state.language.language);
 
   const cn = bem('ModalLayout');
 
@@ -31,8 +35,8 @@ function ModalLayout(props) {
     <div className={cn()} ref={layout}>
       <div className={cn('frame')} ref={frame}>
         <div className={cn('head')}>
-          <h1 className={cn('title')}>{props.title}</h1>
-          <button className={cn('close')} onClick={props.onClose}>Закрыть</button>
+          <h1 className={cn('title')}>{translateWord(props.title, selectedLanguage)}</h1>
+          <button className={cn('close')} onClick={props.onClose}>{translateWord("Закрыть", selectedLanguage)}</button>
         </div>
         <div className={cn('content')}>
           {props.children}
