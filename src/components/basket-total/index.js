@@ -2,13 +2,10 @@ import {memo} from "react";
 import PropTypes from 'prop-types';
 import {cn as bem} from '@bem-react/classname';
 import {numberFormat} from "../../utils";
-import useSelector from "../../store/use-selector";
 import {translateWord} from "../../utils";
 import './style.css';
 
-function BasketTotal({sum}) {
-
-  const selectedLanguage = useSelector(state => state.language.language);
+function BasketTotal({sum, selectedLanguage}) {
 
   const cn = bem('BasketTotal');
   return (

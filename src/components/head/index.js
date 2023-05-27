@@ -1,25 +1,20 @@
 import {memo, useCallback} from "react";
 import PropTypes from "prop-types";
-import useStore from "../../store/use-store";
 import {translateWord} from "../../utils";
-import useSelector from "../../store/use-selector";
 import './style.css';
 
-function Head({title}){
-  
-  const store = useStore();
-  const selectedLanguage = useSelector(state => state.language.language);
+function Head({title, selectedLanguage, changeLanguageTo}){
 
   const callbacks = {
-    changeLanguageTo: useCallback((lang) => store.actions.language.setLanguage(lang))
+    changeLanguage: useCallback((lang) => changeLanguageTo(lang))
   }
 
   return (
     <div className='Head'>
       <h1>{translateWord(title, selectedLanguage)}</h1>
       <div className='Head-languages'>
-        <p onClick={() => callbacks.changeLanguageTo("ru-RU")}>RU</p>
-        <p onClick={() => callbacks.changeLanguageTo("en-US")}>EN</p>
+        <p onClick={() => callbacks.changeLanguage("ru-RU")}>RU</p>
+        <p onClick={() => callbacks.changeLanguage("en-US")}>EN</p>
       </div>
     </div>
   )
@@ -27,6 +22,13 @@ function Head({title}){
 
 Head.propTypes = {
   title: PropTypes.node,
+  selectedLanguage: PropTypes.string,
+  changeLanguageTo: PropTypes.func,
+};
+
+Head.defaultProps = {
+  changeLanguageTo: () => {},
+  selectedLanguage: "ru-RU",
 };
 
 export default memo(Head);

@@ -1,21 +1,13 @@
 import {memo, useCallback, useEffect} from "react";
 import {cn as bem} from "@bem-react/classname";
 import "./style.css";
-import useStore from "../../store/use-store";
-import useSelector from "../../store/use-selector";
 
-function PaginationButtons() {
-  const store = useStore();
-
-  const paginationItems = useSelector(state => ({...state.pagination}));
+function PaginationButtons({paginationItems, setCurrentPage}) {
+  
   const selectedPage = paginationItems.currentPage;
 
-  useEffect(() => {
-    store.actions.pagination.setTotalPages();
-  }, []);
-
   const callbacks = {
-    setPage: useCallback(num => store.actions.pagination.setPage(num)),
+    setPage: (page) => setCurrentPage(page),
   };
 
   const cn = bem("PaginationButtons");

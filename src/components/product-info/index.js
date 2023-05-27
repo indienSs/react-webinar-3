@@ -2,18 +2,15 @@ import {memo} from "react";
 import PropTypes from "prop-types";
 import {numberFormat} from "../../utils";
 import {cn as bem} from "@bem-react/classname";
-import useSelector from "../../store/use-selector";
 import {translateWord} from "../../utils";
 import "./style.css";
 
-function ProductInfo({productInfo, onAddItem}) {
-
-  const selectedLanguage = useSelector(state => state.language.language);
+function ProductInfo({productInfo, onAddItem, selectedLanguage}) {
   
   const cn = bem("ProductInfo");
 
   const callbacks = {
-    onAdd: e => onAddItem(productInfo._id),
+    onAdd: id => onAddItem(id),
   };
 
   return (
@@ -25,7 +22,7 @@ function ProductInfo({productInfo, onAddItem}) {
       <div className={cn("details")}>{translateWord("Категория", selectedLanguage)}: <p>{productInfo.category?.title}</p></div>
       <div className={cn("details")}>{translateWord("Год выпуска", selectedLanguage)}: <p>{productInfo.edition}</p></div>
       <h3>{translateWord("Цена", selectedLanguage)}: {numberFormat(productInfo.price)} ₽</h3>
-      <button onClick={callbacks.onAdd}>{translateWord("Добавить", selectedLanguage)}</button>
+      <button onClick={() => callbacks.onAdd(productInfo._id)}>{translateWord("Добавить", selectedLanguage)}</button>
     </div>
   );
 }
@@ -46,6 +43,7 @@ ProductInfo.propTypes = {
       _id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     }),
   }).isRequired,
+  selectedLanguage: PropTypes.string,
   onAddItem: PropTypes.func,
 };
 

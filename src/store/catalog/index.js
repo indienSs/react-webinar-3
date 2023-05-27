@@ -26,6 +26,19 @@ class Catalog extends StoreModule {
       console.log(error);
     }
   }
+
+  async loadSingleProduct(id) {
+    try {
+      const response = await fetch(`/api/v1/articles/${id}?fields=*,madeIn(title,code),category(title)`);
+      const json = await response.json();
+      this.setState({
+        ...this.getState(),
+        list: [json.result]
+      }, 'Загружен товар из АПИ');
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 
 export default Catalog;
