@@ -1,4 +1,4 @@
-import {memo, useCallback, useEffect, useState} from 'react';
+import {memo, useCallback, useEffect} from 'react';
 import Item from "../../components/item";
 import PageLayout from "../../components/page-layout";
 import Head from "../../components/head";
@@ -40,7 +40,7 @@ function Main() {
   const renders = {
     item: useCallback((item) => {
       return <Item item={item} onAdd={callbacks.addToBasket} selectedLanguage={select.selectedLanguage} productLink={"/products/"}/>
-    }, [callbacks.addToBasket]),
+    }, [callbacks.addToBasket, select.selectedLanguage]),
   };
 
   return (

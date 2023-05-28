@@ -13,6 +13,10 @@ function ProductInfo({productInfo, onAddItem, selectedLanguage}) {
     onAdd: id => onAddItem(id),
   };
 
+  if (!productInfo) {
+    return <h3 className={cn("loading")}>Загрузка...</h3>
+  }
+
   return (
     <div className={cn()}>
       <p>{productInfo.description}</p>
@@ -42,7 +46,7 @@ ProductInfo.propTypes = {
       title: PropTypes.string,
       _id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     }),
-  }).isRequired,
+  }),
   selectedLanguage: PropTypes.string,
   onAddItem: PropTypes.func,
 };

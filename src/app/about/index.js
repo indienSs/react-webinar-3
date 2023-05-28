@@ -16,13 +16,11 @@ function About() {
     list: state.catalog.list,
     amount: state.basket.amount,
     sum: state.basket.sum,
-    productInfo: state.product.product,
     selectedLanguage: state.language.language,
     pageNumber: state.pagination.currentPage,
   }));
 
   useEffect(() => {
-    store.actions.product.load(id);
     store.actions.catalog.loadSingleProduct(id);
   }, [id]);
 
@@ -38,7 +36,7 @@ function About() {
   return (
     <PageLayout>
       <Head
-        title={select.productInfo.title}
+        title={select.list[0]?.title}
         selectedLanguage={select.selectedLanguage}
         changeLanguageTo={callbacks.changeLanguageTo}
       />
@@ -49,7 +47,7 @@ function About() {
         selectedLanguage={select.selectedLanguage}
       />
       <ProductInfo
-        productInfo={select.productInfo}
+        productInfo={select.list[0]}
         onAddItem={callbacks.addToBasket}
         selectedLanguage={select.selectedLanguage}
       />

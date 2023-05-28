@@ -42,7 +42,7 @@ function Basket() {
 
   return (
     <ModalLayout title="Корзина" onClose={callbacks.closeModal} selectedLanguage={select.selectedLanguage}>
-      <List list={select.list} renderItem={renders.itemBasket} />
+      <List list={select.list} renderItem={renders.itemBasket} selectedLanguage={select.selectedLanguage}/>
       <BasketTotal sum={select.sum} selectedLanguage={select.selectedLanguage} />
     </ModalLayout>
   );
