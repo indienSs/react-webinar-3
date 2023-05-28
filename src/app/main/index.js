@@ -23,7 +23,7 @@ function Main() {
   
   useEffect(() => {
     store.actions.catalog.load(select.pageNumber);
-    store.actions.pagination.setTotalPages();
+    store.actions.pagination.setTotalPages("/api/v1/articles?fields=items(_id, title, price),count");
   }, [select.pageNumber]);
 
   const callbacks = {

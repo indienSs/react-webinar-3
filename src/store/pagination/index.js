@@ -26,9 +26,9 @@ class Pagination extends StoreModule {
   /**
    * Установка количества доступных страниц
    */
-  async setTotalPages() {
+  async setTotalPages(url) {
     try {
-      const response = await fetch(`/api/v1/articles?fields=items(_id, title, price),count`);
+      const response = await fetch(url);
       const json = await response.json();
       this.setState(
         {
