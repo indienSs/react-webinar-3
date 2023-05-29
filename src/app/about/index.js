@@ -17,7 +17,7 @@ function About() {
     amount: state.basket.amount,
     sum: state.basket.sum,
     selectedLanguage: state.language.language,
-    pageNumber: state.pagination.currentPage,
+    pageNumber: state.catalog.pagination.currentPage,
   }));
 
   useEffect(() => {

@@ -16,14 +16,13 @@ function Main() {
     list: state.catalog.list,
     amount: state.basket.amount,
     sum: state.basket.sum,
-    pageNumber: state.pagination.currentPage,
+    pageNumber: state.catalog.pagination.currentPage,
     selectedLanguage: state.language.language,
-    paginationItems: {...state.pagination},
+    paginationItems: {...state.catalog.pagination},
   }));
   
   useEffect(() => {
     store.actions.catalog.load(select.pageNumber);
-    store.actions.pagination.setTotalPages("/api/v1/articles?fields=items(_id, title, price),count");
   }, [select.pageNumber]);
 
   const callbacks = {
@@ -34,7 +33,7 @@ function Main() {
     // Смена языка приложения
     changeLanguageTo: useCallback((lang) => store.actions.language.setLanguage(lang), [store]),
     // Смена страницы для пагинации
-    setCurrentPage: useCallback((num) => store.actions.pagination.setPage(num), [store]),
+    setCurrentPage: useCallback((num) => store.actions.catalog.setPage(num), [store]),
   }
 
   const renders = {
