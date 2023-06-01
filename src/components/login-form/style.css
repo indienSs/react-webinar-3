@@ -8,14 +8,11 @@
   align-items: flex-start;
 }
 
-.LoginForm-form input{
-  margin-bottom: 20px;
-}
-
-.LoginForm-form input{
+.LoginForm-form input {
   margin-bottom: 20px;
 }
 
 .LoginForm-error-message {
   color: red;
+  margin-top: 0;
 }

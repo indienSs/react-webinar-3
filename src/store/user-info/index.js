@@ -32,15 +32,13 @@ class UserInfo extends StoreModule {
       const json = await response.json();
       const item = json;
 
-      console.log(item);
-
       if (item.error) {
         const errorsArray = item.error.data.issues.map(issue => issue.message);
         const errorMessage = errorsArray.join(", ");
         this.setState(
           {
             ...this.getState(),
-            error: errorMessage
+            error: errorMessage,
           },
           "Получена ошибка авторизации"
         );
@@ -49,14 +47,15 @@ class UserInfo extends StoreModule {
           {
             ...this.getState(),
             userInfo: {
-              name: item.result.user.username,
+              name: item.result.user.profile.name,
               phone: item.result.user.profile.phone,
               email: item.result.user.email,
             },
-            error: ""
+            error: "",
           },
           "Авторизация пользователя"
         );
+        window.localStorage.setItem("token", item.result.token);
       }
     } catch (error) {
       console.log(error);
@@ -71,7 +70,7 @@ class UserInfo extends StoreModule {
 
     if (token) {
       try {
-        const response = await fetch(`/users/self`, {
+        const response = await fetch("/api/v1/users/self", {
           headers: {
             "X-Token": token,
             "Content-Type": "application/json",
@@ -79,14 +78,11 @@ class UserInfo extends StoreModule {
         });
         const json = await response.json();
         const item = json.result;
-        console.log(item);
 
         this.setState(
           {
             ...this.getState(),
-            name: item.name,
-            phone: item.phone,
-            email: item.email,
+            userInfo: {name: item.profile.name, phone: item.profile.phone, email: item.email},
           },
           "Получение информации о пользователе"
         );
@@ -99,7 +95,7 @@ class UserInfo extends StoreModule {
   /**
    * Удаление информации о пользователе
    */
-  removeUserInfo() {
+  async removeUserInfo() {
     this.setState(
       {
         userInfo: {
@@ -112,6 +108,20 @@ class UserInfo extends StoreModule {
       },
       "Удаление информации о пользователе"
     );
+    window.localStorage.clear();
+    // try {
+    //   const response = await fetch("/api/v1/users/self", {
+    //     method: "DELETE",
+    //     headers: {
+    //       "X-Token": window.localStorage.getItem("token"),
+    //       "Content-Type": "application/json",
+    //     },
+    //   });
+    //   const json = await response.json();
+    //   console.log(json);
+    // } catch (error) {
+    //   console.log(error);
+    // }
   }
 }
 

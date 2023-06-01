@@ -1,43 +1,43 @@
-import {memo, useCallback, useMemo} from 'react';
-import {useParams} from "react-router-dom";
+import {memo, useCallback, useEffect} from "react";
 import useStore from "../../hooks/use-store";
 import useSelector from "../../hooks/use-selector";
-import useTranslate from "../../hooks/use-translate";
-import useInit from "../../hooks/use-init";
-import PageLayout from "../../components/page-layout";
-import Head from "../../components/head";
+import PageLayout from "../../layouts/page-layout";
 import Navigation from "../../containers/navigation";
 import Spinner from "../../components/spinner";
-import ArticleCard from "../../components/article-card";
-import LocaleSelect from "../../containers/locale-select";
-import LoginButtons from '../../components/login-buttons';
-import LoginForm from '../../components/login-form';
+import LoginForm from "../../components/login-form";
+import Header from "../../containers/header";
+import {useNavigate} from "react-router-dom";
 
 function Login() {
   const store = useStore();
+  const navigate = useNavigate();
 
   const select = useSelector(state => ({
-    userName: state.userInfo.name,
-    message: state.userInfo.error
-  }))
+    userName: state.userInfo.userInfo.name,
+    message: state.userInfo.error,
+  }));
+
+  useEffect(() => {
+    store.actions.userInfo.getUserInfo();
+    if (select.userName) {
+      navigate("/profile")
+    }
+  }, [select.userName]);
 
   const callbacks = {
-    // Добавление в корзину
-    addToBasket: useCallback(_id => store.actions.basket.addToBasket(_id), [store]),
     // Отправка логин-формы на сервер
     onSendForm: useCallback(userData => store.actions.userInfo.login(userData), [store]),
-  }
+  };
+
+  
 
   return (
     <PageLayout>
-      <Head title="Магазин" userName={select.userName}>
-        <LocaleSelect/>
-      </Head>
-      <Navigation/>
-      {/* <Spinner active={select.waiting}>
-        <ArticleCard article={select.article} onAdd={callbacks.addToBasket} t={t}/>
-      </Spinner> */}
-      <LoginForm onSendForm={callbacks.onSendForm} errorMessage={select.message}/>
+      <Header title="Магазин" />
+      <Navigation />
+      {/* <Spinner active={select.waiting}> */}
+      <LoginForm onSendForm={callbacks.onSendForm} errorMessage={select.message} />
+      {/* </Spinner> */}
     </PageLayout>
   );
 }

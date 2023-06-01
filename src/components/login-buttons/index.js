@@ -10,8 +10,10 @@ function LoginButtons({userName, onExitAccount}) {
   return (
     <div className={cn()}>
       {userName ? (
-        <div>
-          <p>{userName}</p>
+        <div className={cn("user-info")}>
+          <Link to="/profile">
+            <p>{userName}</p>
+          </Link>
           <button onClick={() => onExitAccount()}>Выход</button>
         </div>
       ) : (
@@ -25,10 +27,12 @@ function LoginButtons({userName, onExitAccount}) {
 
 LoginButtons.propTypes = {
   userName: PropTypes.string,
+  onExitAccount: PropTypes.func,
 };
 
 LoginButtons.defaultProps = {
   userName: "",
+  onExitAccount: () => {},
 };
 
 export default memo(LoginButtons);

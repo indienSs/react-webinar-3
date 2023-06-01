@@ -1,42 +1,35 @@
-import {memo, useCallback, useEffect, useMemo} from 'react';
-import {useParams} from "react-router-dom";
+import {memo, useEffect, useMemo} from "react";
 import useStore from "../../hooks/use-store";
 import useSelector from "../../hooks/use-selector";
-import useTranslate from "../../hooks/use-translate";
-import useInit from "../../hooks/use-init";
-import PageLayout from "../../components/page-layout";
-import Head from "../../components/head";
+import PageLayout from "../../layouts/page-layout";
 import Navigation from "../../containers/navigation";
 import Spinner from "../../components/spinner";
-import ArticleCard from "../../components/article-card";
-import LocaleSelect from "../../containers/locale-select";
-import UserPage from '../../components/user-page';
+import UserPage from "../../components/user-page";
+import Header from "../../containers/header";
+import {useNavigate} from "react-router-dom";
 
 function Profile() {
-  const store = useStore();
-
-  // useInit(() => {
-  //   store.actions.article.load(params.id);
-  // }, [params.id]);
-
-  useEffect(()=> {
-    store.actions.userInfo.getUserInfo();
-  }, [])
+  const navigate = useNavigate();
 
   const select = useSelector(state => ({
-    userInfo: state.userInfo.userInfo
+    userInfo: state.userInfo.userInfo,
+    userName: state.userInfo.userInfo.name,
+    message: state.userInfo.error,
   }));
+
+  useEffect(() => {
+    if (!select.userName) {
+      navigate("/login");
+    }
+  }, [select.userName]);
 
   return (
     <PageLayout>
-      <Head title="Магазин">
-        <LocaleSelect/>
-      </Head>
-      <Navigation/>
-      <UserPage userInfo={select.userInfo}/>
-      {/* <Spinner active={select.waiting}>
-        <ArticleCard article={select.article} onAdd={callbacks.addToBasket} t={t}/>
-      </Spinner> */}
+      <Header title="Магазин" />
+      <Navigation />
+      {/* <Spinner active={select.waiting}> */}
+      <UserPage userInfo={select.userInfo} />
+      {/* </Spinner> */}
     </PageLayout>
   );
 }
