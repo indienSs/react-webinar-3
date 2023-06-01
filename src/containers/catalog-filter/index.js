@@ -12,6 +12,7 @@ function CatalogFilter() {
 
   const select = useSelector(state => ({
     sort: state.catalog.params.sort,
+    category: state.catalog.params.category,
     query: state.catalog.params.query,
   }));
 
@@ -32,11 +33,18 @@ function CatalogFilter() {
       {value: 'edition', title: 'Древние'},
     ]), [])
   };
+  
+  const categories = {
+    sort: useMemo(() => ([
+      {value: 'order', title: 'Все'},
+    ]), [])
+  };
 
   const {t} = useTranslate();
 
   return (
     <SideLayout padding='medium'>
+      <Select options={categories.sort} value={select.sort} onChange={callbacks.onSort}/>
       <Select options={options.sort} value={select.sort} onChange={callbacks.onSort}/>
       <Input value={select.query} onChange={callbacks.onSearch} placeholder={'Поиск'}
              delay={1000}/>

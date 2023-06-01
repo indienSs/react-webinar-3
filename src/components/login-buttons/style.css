@@ -1,0 +1,8 @@
+.LoginButtons {
+  display: flex;
+  justify-content: end;
+  align-items: end;
+  padding: 10px 20px;
+  margin: 0;
+  font-size: 18px;
+}

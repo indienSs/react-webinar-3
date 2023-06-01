@@ -1,0 +1,28 @@
+.UserInfo {
+  padding: 20px 40px;
+}
+
+.UserInfo-description {
+  font-size: 18px;
+  margin: 20px 0;
+}
+
+.UserInfo-prop {
+  margin: 20px 0;
+  display: flex;
+  justify-content: flex-start;
+  font-size: 18px
+}
+
+.UserInfo-prop_size_big{
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.UserInfo-label{
+  padding-right: 10px;
+}
+
+.UserInfo-value{
+  font-weight: bold;
+}
