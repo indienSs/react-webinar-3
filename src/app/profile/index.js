@@ -1,4 +1,4 @@
-import {memo, useCallback, useMemo} from 'react';
+import {memo, useCallback, useEffect, useMemo} from 'react';
 import {useParams} from "react-router-dom";
 import useStore from "../../hooks/use-store";
 import useSelector from "../../hooks/use-selector";
@@ -10,38 +10,33 @@ import Navigation from "../../containers/navigation";
 import Spinner from "../../components/spinner";
 import ArticleCard from "../../components/article-card";
 import LocaleSelect from "../../containers/locale-select";
+import UserPage from '../../components/user-page';
 
 function Profile() {
   const store = useStore();
 
-  // Параметры из пути /articles/:id
-  const params = useParams();
+  // useInit(() => {
+  //   store.actions.article.load(params.id);
+  // }, [params.id]);
 
-  useInit(() => {
-    store.actions.article.load(params.id);
-  }, [params.id]);
+  useEffect(()=> {
+    store.actions.userInfo.getUserInfo();
+  }, [])
 
   const select = useSelector(state => ({
-    article: state.article.data,
-    waiting: state.article.waiting,
+    userInfo: state.userInfo.userInfo
   }));
-
-  const {t} = useTranslate();
-
-  const callbacks = {
-    // Добавление в корзину
-    addToBasket: useCallback(_id => store.actions.basket.addToBasket(_id), [store]),
-  }
 
   return (
     <PageLayout>
-      <Head title={select.article.title}>
+      <Head title="Магазин">
         <LocaleSelect/>
       </Head>
       <Navigation/>
-      <Spinner active={select.waiting}>
+      <UserPage userInfo={select.userInfo}/>
+      {/* <Spinner active={select.waiting}>
         <ArticleCard article={select.article} onAdd={callbacks.addToBasket} t={t}/>
-      </Spinner>
+      </Spinner> */}
     </PageLayout>
   );
 }

@@ -18,6 +18,7 @@ function Login() {
 
   const select = useSelector(state => ({
     userName: state.userInfo.name,
+    message: state.userInfo.error
   }))
 
   const callbacks = {
@@ -36,7 +37,7 @@ function Login() {
       {/* <Spinner active={select.waiting}>
         <ArticleCard article={select.article} onAdd={callbacks.addToBasket} t={t}/>
       </Spinner> */}
-      <LoginForm onSendForm={callbacks.onSendForm}/>
+      <LoginForm onSendForm={callbacks.onSendForm} errorMessage={select.message}/>
     </PageLayout>
   );
 }

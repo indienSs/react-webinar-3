@@ -4,7 +4,7 @@ import useSelector from "../../hooks/use-selector";
 import LoginButtons from "../../components/login-buttons";
 import SideLayout from "../../components/side-layout";
 
-function HeaderLogin() {
+function Header() {
 
   const select = useSelector(state => ({
     userName: state.userInfo.name
@@ -13,9 +13,10 @@ function HeaderLogin() {
 
   return (
     <SideLayout side='end'>
+      <Head />
       <LoginButtons userName={select.userName}/>
     </SideLayout>
   );
 }
 
-export default memo(HeaderLogin);
+export default memo(Header);

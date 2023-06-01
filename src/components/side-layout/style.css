@@ -12,6 +12,10 @@
   justify-content: flex-start;
 }
 
+.SideLayout_side_start {
+  justify-content: flex-start;
+}
+
 .SideLayout_side_end {
   justify-content: flex-end;
 }

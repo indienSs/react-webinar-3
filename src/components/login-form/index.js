@@ -1,10 +1,9 @@
 import {memo, useState} from "react";
 import PropTypes from "prop-types";
 import {cn as bem} from "@bem-react/classname";
-import {numberFormat} from "../../utils";
 import "./style.css";
 
-function LoginForm({onSendForm}) {
+function LoginForm({onSendForm, errorMessage}) {
   const cn = bem("LoginForm");
 
   const [loginFormData, setLoginFormData] = useState({
@@ -23,7 +22,7 @@ function LoginForm({onSendForm}) {
 
   const sendForm = (e) => {
     e.preventDefault();
-    onSendForm(loginFormData)
+    onSendForm(loginFormData);
   }
 
   return (
@@ -34,6 +33,7 @@ function LoginForm({onSendForm}) {
         <input type="text" value={loginFormData.login} onChange={onChangeForm} name="login" id="login"/>
         <label htmlFor="password">Пароль</label>
         <input type="password" value={loginFormData.password} onChange={onChangeForm} name="password" id="password"/>
+        {errorMessage && <p className={cn("error-message")}>{errorMessage}</p>}
         <button onClick={sendForm}>Войти</button>
       </form>
     </div>
@@ -42,6 +42,7 @@ function LoginForm({onSendForm}) {
 
 LoginForm.propTypes = {
   onSendForm: PropTypes.func,
+  errorMessage: PropTypes.string,
 };
 
 LoginForm.defaultProps = {

@@ -4,13 +4,16 @@ import StoreModule from "../module";
  * Покупательская корзина
  */
 class UserInfo extends StoreModule {
-
   initState() {
     return {
-      name: "",
-      phone: "",
-      email: ""
-    }
+      userInfo: {
+        name: "",
+        phone: "",
+        email: "",
+      },
+      error: "",
+      waiting: false,
+    };
   }
 
   /**
@@ -18,47 +21,78 @@ class UserInfo extends StoreModule {
    * @param [userData] {Object} логин и пароль
    */
   async login(userData) {
-
-    const token = window.localStorage.getItem("token");
-
-    if (token) {
-      const response = await fetch(`/users/self`);
+    try {
+      const response = await fetch("/api/v1/users/sign", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
       const json = await response.json();
-      const item = json.result;
+      const item = json;
+
       console.log(item);
-      
-      this.setState({
-        ...this.getState(),
-        name: item.name,
-        phone: item.phone,
-        email: item.email
-      }, 'Получение информации о пользователе');
+
+      if (item.error) {
+        const errorsArray = item.error.data.issues.map(issue => issue.message);
+        const errorMessage = errorsArray.join(", ");
+        this.setState(
+          {
+            ...this.getState(),
+            error: errorMessage
+          },
+          "Получена ошибка авторизации"
+        );
+      } else {
+        this.setState(
+          {
+            ...this.getState(),
+            userInfo: {
+              name: item.result.user.username,
+              phone: item.result.user.profile.phone,
+              email: item.result.user.email,
+            },
+            error: ""
+          },
+          "Авторизация пользователя"
+        );
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 
   /**
    * Получение информации о пользователе
    */
-  async addUserInfo() {
-
+  async getUserInfo() {
     const token = window.localStorage.getItem("token");
 
     if (token) {
-     try {
-      const response = await fetch(`/users/self`);
-      const json = await response.json();
-      const item = json.result;
-      console.log(item);
-      
-      this.setState({
-        ...this.getState(),
-        name: item.name,
-        phone: item.phone,
-        email: item.email
-      }, 'Получение информации о пользователе');
-     } catch (error) {
-      console.log(error);
-     }
+      try {
+        const response = await fetch(`/users/self`, {
+          headers: {
+            "X-Token": token,
+            "Content-Type": "application/json",
+          },
+        });
+        const json = await response.json();
+        const item = json.result;
+        console.log(item);
+
+        this.setState(
+          {
+            ...this.getState(),
+            name: item.name,
+            phone: item.phone,
+            email: item.email,
+          },
+          "Получение информации о пользователе"
+        );
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 
@@ -66,11 +100,18 @@ class UserInfo extends StoreModule {
    * Удаление информации о пользователе
    */
   removeUserInfo() {
-    this.setState({
-      name: "",
-      phone: "",
-      email: ""
-    }, 'Удаление информации о пользователе');
+    this.setState(
+      {
+        userInfo: {
+          name: "",
+          phone: "",
+          email: "",
+        },
+        error: "",
+        waiting: false,
+      },
+      "Удаление информации о пользователе"
+    );
   }
 }
 

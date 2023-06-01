@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import LoginButtons from "../login-buttons";
 import './style.css';
 
-function Head({title, children, userName}){
+function Head({title, children, userName, onExitAccount}){
   return (
     <>
-      <LoginButtons userName={userName}/>
+      <LoginButtons userName={userName} onExitAccount={onExitAccount}/>
       <div className='Head'>
         <div className='Head-place'>
           <h1 >{title}</h1>

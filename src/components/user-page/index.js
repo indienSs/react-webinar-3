@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import {cn as bem} from '@bem-react/classname';
 import './style.css';
 
-function UserInfo({userInfo}) {
-  const cn = bem('UserInfo');
+function UserPage({userInfo}) {
+  const cn = bem('UserPage');
   return (
     <div className={cn()}>
       <h3>Профиль</h3>
@@ -15,7 +15,7 @@ function UserInfo({userInfo}) {
   );
 }
 
-UserInfo.propTypes = {
+UserPage.propTypes = {
   userInfo: PropTypes.shape({
     name: PropTypes.string,
     phone: PropTypes.string,
@@ -23,6 +23,6 @@ UserInfo.propTypes = {
   }).isRequired,
 };
 
-UserInfo.defaultProps = {}
+UserPage.defaultProps = {}
 
-export default memo(ArticleCard);
+export default memo(UserPage);
