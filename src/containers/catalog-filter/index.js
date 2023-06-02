@@ -5,9 +5,9 @@ import useSelector from "../../hooks/use-selector";
 import Select from "../../components/select";
 import Input from "../../components/input";
 import SideLayout from "../../layouts/side-layout";
+import {arrayRecurseFilter} from "../../utils";
 
 function CatalogFilter() {
-
   const store = useStore();
 
   const select = useSelector(state => ({
@@ -29,28 +29,29 @@ function CatalogFilter() {
   };
 
   const {t} = useTranslate();
+  const loadedCategories = select.categories.map(category => ({value: category._id, title: category.title}));
 
   const options = {
-    sort: useMemo(() => ([
-      {value: 'order', title: 'По порядку'},
-      {value: 'title.ru', title: 'По именованию'},
-      {value: '-price', title: 'Сначала дорогие'},
-      {value: 'edition', title: 'Древние'},
-    ]), []),
-    categories: [{value: '', title: t("all")}, ...select.categories.map(category => (
-      {value: category._id, title: `${category.parent ? "-".repeat(1) : ""}${category.title}`}))]
+    sort: useMemo(
+      () => [
+        {value: "order", title: "По порядку"},
+        {value: "title.ru", title: "По именованию"},
+        {value: "-price", title: "Сначала дорогие"},
+        {value: "edition", title: "Древние"},
+      ],
+      []
+    ),
+    categories: [{value: "", title: t("all")}, ...loadedCategories],
   };
-  
 
   return (
-    <SideLayout padding='medium'>
-      <Select options={options.categories} value={select.category} onChange={callbacks.onCategory}/>
-      <Select options={options.sort} value={select.sort} onChange={callbacks.onSort}/>
-      <Input value={select.query} onChange={callbacks.onSearch} placeholder={t("search")}
-             delay={1000}/>
-      <button onClick={callbacks.onReset}>{t('filter.reset')}</button>
+    <SideLayout padding="medium">
+      <Select options={options.categories} value={select.category} onChange={callbacks.onCategory} />
+      <Select options={options.sort} value={select.sort} onChange={callbacks.onSort} />
+      <Input value={select.query} onChange={callbacks.onSearch} placeholder={t("search")} delay={1000} />
+      <button onClick={callbacks.onReset}>{t("filter.reset")}</button>
     </SideLayout>
-  )
+  );
 }
 
 export default memo(CatalogFilter);
