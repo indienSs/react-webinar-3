@@ -9,6 +9,7 @@ import {arrayRecurseFilter} from "../../utils";
 
 function CatalogFilter() {
   const store = useStore();
+  const {t} = useTranslate();
 
   const select = useSelector(state => ({
     sort: state.catalog.params.sort,
@@ -28,8 +29,7 @@ function CatalogFilter() {
     onReset: useCallback(() => store.actions.catalog.resetParams(), [store]),
   };
 
-  const {t} = useTranslate();
-  const loadedCategories = select.categories.map(category => ({value: category._id, title: category.title}));
+  const loadedCategories = select.categories.map(category => ({value: category._id, title: category.title, ...category}));
 
   const options = {
     sort: useMemo(
@@ -41,7 +41,7 @@ function CatalogFilter() {
       ],
       []
     ),
-    categories: [{value: "", title: t("all")}, ...loadedCategories],
+    categories: [{value: "", title: t("all")}, ...arrayRecurseFilter(loadedCategories)],
   };
 
   return (
