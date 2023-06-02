@@ -3,16 +3,16 @@ import PropTypes from "prop-types";
 import {cn as bem} from "@bem-react/classname";
 import "./style.css";
 
-function UserPage({userInfo}) {
+function UserPage({userInfo, t}) {
   const cn = bem("UserPage");
   return (
     <div className={cn()}>
-      <h3>Профиль</h3>
+      <h3>{t("profile")}</h3>
       <div className={cn("info")}>
-        Имя: <p>{userInfo.name}</p>
+        {t("name")}: <p>{userInfo.name}</p>
       </div>
       <div className={cn("info")}>
-        Телефон: <p>{userInfo.phone}</p>
+        {t("phone")}: <p>{userInfo.phone}</p>
       </div>
       <div className={cn("info")}>
         email: <p>{userInfo.email}</p>
@@ -27,8 +27,11 @@ UserPage.propTypes = {
     phone: PropTypes.string,
     email: PropTypes.string,
   }).isRequired,
+  t: PropTypes.func
 };
 
-UserPage.defaultProps = {};
+UserPage.defaultProps = {
+  t: () => {}
+};
 
 export default memo(UserPage);

@@ -12,16 +12,34 @@ class CatalogState extends StoreModule {
   initState() {
     return {
       list: [],
+      categories: [],
       params: {
         page: 1,
         limit: 10,
         sort: 'order',
-        category: 'all',
+        category: '',
         query: ''
       },
       count: 0,
       waiting: false
     }
+  }
+
+  /**
+   * Получение доступных категорий товаров
+   */
+  async getCategories() {
+    try {
+      const response = await fetch("api/v1/categories?fields=_id,title,parent(_id)&limit=*");
+      const json = await response.json();
+      this.setState({
+        ...this.getState(),
+        categories: json.result.items,
+      }, 'Загружены категории')
+    } catch (error) {
+      console.log(error);
+    }
+    
   }
 
   /**
@@ -77,24 +95,30 @@ class CatalogState extends StoreModule {
     } else {
       window.history.pushState({}, '', url);
     }
+    const activeCategory = params.category ? {'search[category]': params.category} : null
 
     const apiParams = {
       limit: params.limit,
       skip: (params.page - 1) * params.limit,
       fields: 'items(*),count',
       sort: params.sort,
-      category: params.category,
-      'search[query]': params.query
+      'search[query]': params.query,
+      ...activeCategory
     };
 
-    const response = await fetch(`/api/v1/articles?${new URLSearchParams(apiParams)}`);
-    const json = await response.json();
-    this.setState({
-      ...this.getState(),
-      list: json.result.items,
-      count: json.result.count,
-      waiting: false
-    }, 'Загружен список товаров из АПИ');
+    try {
+      this.getCategories();
+      const response = await fetch(`/api/v1/articles?${new URLSearchParams(apiParams)}`);
+      const json = await response.json();
+      this.setState({
+        ...this.getState(),
+        list: json.result.items,
+        count: json.result.count,
+        waiting: false
+      }, 'Загружен список товаров из АПИ');
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 

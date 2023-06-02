@@ -7,9 +7,11 @@ import Spinner from "../../components/spinner";
 import UserPage from "../../components/user-page";
 import Header from "../../containers/header";
 import {useNavigate} from "react-router-dom";
+import useTranslate from "../../hooks/use-translate";
 
 function Profile() {
   const navigate = useNavigate();
+  const {t} = useTranslate();
 
   const select = useSelector(state => ({
     userInfo: state.userInfo.userInfo,
@@ -25,10 +27,10 @@ function Profile() {
 
   return (
     <PageLayout>
-      <Header title="Магазин" />
+      <Header title={t('title')}/>
       <Navigation />
       {/* <Spinner active={select.waiting}> */}
-      <UserPage userInfo={select.userInfo} />
+      <UserPage userInfo={select.userInfo} t={t}/>
       {/* </Spinner> */}
     </PageLayout>
   );

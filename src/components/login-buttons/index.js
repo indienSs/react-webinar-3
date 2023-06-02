@@ -4,7 +4,7 @@ import {cn as bem} from "@bem-react/classname";
 import {Link} from "react-router-dom";
 import "./style.css";
 
-function LoginButtons({userName, onExitAccount}) {
+function LoginButtons({userName, onExitAccount, t}) {
   const cn = bem("LoginButtons");
 
   return (
@@ -14,11 +14,11 @@ function LoginButtons({userName, onExitAccount}) {
           <Link to="/profile">
             <p>{userName}</p>
           </Link>
-          <button onClick={() => onExitAccount()}>Выход</button>
+          <button onClick={() => onExitAccount()}>{t("header.exit")}</button>
         </div>
       ) : (
         <Link to="/login">
-          <button>Вход</button>
+          <button>{t('header.enter')}</button>
         </Link>
       )}
     </div>
@@ -28,11 +28,13 @@ function LoginButtons({userName, onExitAccount}) {
 LoginButtons.propTypes = {
   userName: PropTypes.string,
   onExitAccount: PropTypes.func,
+  t: PropTypes.func,
 };
 
 LoginButtons.defaultProps = {
   userName: "",
   onExitAccount: () => {},
+  t: () => {},
 };
 
 export default memo(LoginButtons);
