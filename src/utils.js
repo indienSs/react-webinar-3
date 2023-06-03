@@ -68,7 +68,7 @@ function filterChildren(parents, children, counter = 1) {
       if (parents[i]._id === children[j].parent._id) {
         result.splice(i + 1, 0, {
           ...children[j],
-          title: "-".repeat(counter) + children[j].title,
+          title: "- ".repeat(counter) + children[j].title,
           parent: null,
         });
         resChildren.splice(j, 1, {
