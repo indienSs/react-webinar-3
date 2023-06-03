@@ -62,28 +62,29 @@ function filterChildren(parents, children, counter = 1) {
   let result = parents;
   let resChildren = children;
 
-  //Поиск совпадения родительского id с id child-элемента
-  for (let i = 0; i < parents.length; i++) {
-    for (let j = 0; j < children.length; j++) {
-      if (parents[i]._id === children[j].parent._id) {
-        result.splice(i + 1, 0, {
-          ...children[j],
-          title: "- ".repeat(counter) + children[j].title,
-          parent: null,
-        });
-        resChildren.splice(j, 1, {
-          ...children[j],
-          parent: {_id: null},
-        });
+  while (resChildren.length) {
+    parents = result;
+    children = resChildren;
+    
+    //Поиск совпадения родительского id с id child-элемента
+    for (let i = 0; i < parents.length; i++) {
+      for (let j = 0; j < children.length; j++) {
+        if (parents[i]._id === children[j].parent._id) {
+          result.splice(i + 1, 0, {
+            ...children[j],
+            title: "- ".repeat(counter) + children[j].title,
+            parent: null,
+          });
+          resChildren.splice(j, 1, {
+            ...children[j],
+            parent: {_id: null},
+          });
+          // resChildren.splice(j, 1);
+        }
       }
     }
-  }
-
-  resChildren = resChildren.filter(el => el.parent._id !== null);
-  counter--;
-
-  if (resChildren.length) {
-    result = filterChildren(result, resChildren, counter);
+    counter += 1;
+    resChildren = resChildren.filter(el => el.parent._id !== null);
   }
 
   return result;
