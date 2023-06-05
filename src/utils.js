@@ -53,39 +53,29 @@ export function arrayRecurseFilter(arr) {
     }
   });
 
-  const result = filterChildren(parents, children);
+  const {result} = filterChildren(parents, children);
 
   return result;
 }
 
-function filterChildren(parents, children, counter = 1) {
-  let result = parents;
+function filterChildren(parents, children, count = 1) {
+  let result = [];
   let resChildren = children;
 
-  while (resChildren.length) {
-    parents = result;
-    children = resChildren;
-    
-    //Поиск совпадения родительского id с id child-элемента
-    for (let i = 0; i < parents.length; i++) {
-      for (let j = 0; j < children.length; j++) {
-        if (parents[i]._id === children[j].parent._id) {
-          result.splice(i + 1, 0, {
-            ...children[j],
-            title: "- ".repeat(counter) + children[j].title,
-            parent: null,
-          });
-          resChildren.splice(j, 1, {
-            ...children[j],
-            parent: {_id: null},
-          });
-          // resChildren.splice(j, 1);
-        }
+  for (const parent of parents) {
+    result.push(parent);
+    for (const child of children) {
+      if (parent.value === child.parent._id) {
+        result.push({...child, title: "- ".repeat(count) + child.title});
+        resChildren = resChildren.filter(el => el.value !== child.value);
       }
     }
-    counter += 1;
-    resChildren = resChildren.filter(el => el.parent._id !== null);
+  }
+  count++;
+
+  if (resChildren.length > 0) {
+    ({result, resChildren, count} = filterChildren(result, resChildren, count));
   }
 
-  return result;
+  return {result, resChildren, count};
 }

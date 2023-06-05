@@ -7,7 +7,7 @@ function UserPage({userInfo, t}) {
   const cn = bem("UserPage");
   return (
     <div className={cn()}>
-      <h3>{t("profile")}</h3>
+      <h2>{t("profile")}</h2>
       <div className={cn("info")}>
         {t("name")}: <p>{userInfo.name}</p>
       </div>

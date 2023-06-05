@@ -15,7 +15,7 @@ function CatalogFilter() {
     sort: state.catalog.params.sort,
     category: state.catalog.params.category,
     query: state.catalog.params.query,
-    categories: state.catalog.categories,
+    categories: state.categories.categories,
   }));
 
   const callbacks = {
@@ -29,7 +29,7 @@ function CatalogFilter() {
     onReset: useCallback(() => store.actions.catalog.resetParams(), [store]),
   };
 
-  const loadedCategories = select.categories.map(category => ({value: category._id, title: category.title, ...category}));
+  const loadedCategories = select.categories.map(category => ({value: category._id, title: category.title, parent: category.parent}));
 
   const options = {
     sort: useMemo(

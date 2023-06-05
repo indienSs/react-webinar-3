@@ -12,20 +12,17 @@ function Header({title}) {
   const {t} = useTranslate();
 
   const select = useSelector(state => ({
-    userName: state.userInfo.userInfo.name
+    userName: state.session.userInfo.name,
+    loggedIn: state.session.loggedIn,
   }));
 
-  useEffect(() => {
-    store.actions.userInfo.getUserInfo();
-  }, [select.userName])
-
   const callbacks = {
-    onExitAccount: useCallback(() => {store.actions.userInfo.removeUserInfo()}, [select.userName])
+    onExitAccount: useCallback(() => {store.actions.session.removeUserInfo()}, [select.userName])
   }
 
   return (
     <HeaderLayout>
-      <LoginButtons userName={select.userName} onExitAccount={callbacks.onExitAccount} t={t}/>
+      <LoginButtons userName={select.userName} onExitAccount={callbacks.onExitAccount} t={t} loggedIn={select.loggedIn}/>
       <Head title={title}/>
     </HeaderLayout>
   );

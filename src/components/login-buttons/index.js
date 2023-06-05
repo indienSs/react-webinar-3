@@ -4,12 +4,12 @@ import {cn as bem} from "@bem-react/classname";
 import {Link} from "react-router-dom";
 import "./style.css";
 
-function LoginButtons({userName, onExitAccount, t}) {
+function LoginButtons({userName, onExitAccount, t, loggedIn}) {
   const cn = bem("LoginButtons");
 
   return (
     <div className={cn()}>
-      {userName ? (
+      {loggedIn ? (
         <div className={cn("user-info")}>
           <Link to="/profile">
             <p>{userName}</p>
@@ -29,10 +29,12 @@ LoginButtons.propTypes = {
   userName: PropTypes.string,
   onExitAccount: PropTypes.func,
   t: PropTypes.func,
+  loggedIn: PropTypes.bool
 };
 
 LoginButtons.defaultProps = {
   userName: "",
+  loggedIn: false,
   onExitAccount: () => {},
   t: () => {},
 };

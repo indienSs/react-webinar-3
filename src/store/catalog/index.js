@@ -12,7 +12,6 @@ class CatalogState extends StoreModule {
   initState() {
     return {
       list: [],
-      categories: [],
       params: {
         page: 1,
         limit: 10,
@@ -23,23 +22,6 @@ class CatalogState extends StoreModule {
       count: 0,
       waiting: false
     }
-  }
-
-  /**
-   * Получение доступных категорий товаров
-   */
-  async getCategories() {
-    try {
-      const response = await fetch("api/v1/categories?fields=_id,title,parent(_id)&limit=*");
-      const json = await response.json();
-      this.setState({
-        ...this.getState(),
-        categories: json.result.items,
-      }, 'Загружены категории')
-    } catch (error) {
-      console.log(error);
-    }
-    
   }
 
   /**
@@ -107,7 +89,6 @@ class CatalogState extends StoreModule {
     };
 
     try {
-      this.getCategories();
       const response = await fetch(`/api/v1/articles?${new URLSearchParams(apiParams)}`);
       const json = await response.json();
       this.setState({
