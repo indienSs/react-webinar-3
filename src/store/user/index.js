@@ -77,6 +77,19 @@ class UserInfo extends StoreModule {
       "Удаление информации о пользователе из store"
     );
   }
+
+  /**
+   * Сброс ошибок авторизации
+   */
+  async resetErrors() {
+    this.setState(
+      {
+        ...this.getState(),
+        error: "",
+      },
+      "Сброс ошибок авторизации"
+    );
+  }
 }
 
 export default UserInfo;

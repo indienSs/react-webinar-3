@@ -22,25 +22,24 @@ function Login() {
     message: state.user.error,
   }));
 
-  const [errorMessage, setErrorMessage] = useState("");
-
   const callbacks = {
     // Отправка логин-формы на сервер
-    onSendForm: useCallback(userData => {store.actions.user.login(userData); setErrorMessage(select.message)}, [store]),
+    onSendForm: useCallback(userData => {store.actions.user.login(userData), [store]}),
   };
 
   useEffect(() => {
-    if (token) {
+    if (token && select.loggedIn) {
       navigate("/profile")
     }
-  }, [token, select.loggedIn, select.waiting, select.message])
+    store.actions.user.resetErrors();
+  }, [token, select.loggedIn, select.waiting])
 
   return (
     <PageLayout>
       <Header title={t("title")} />
       <Navigation />
       {/* <Spinner active={select.waiting}> */}
-        <LoginForm onSendForm={callbacks.onSendForm} errorMessage={errorMessage} t={t} />
+        <LoginForm onSendForm={callbacks.onSendForm} errorMessage={select.message} t={t} />
       {/* </Spinner> */}
     </PageLayout>
   );
