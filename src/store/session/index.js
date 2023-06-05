@@ -40,16 +40,23 @@ class SessionStore extends StoreModule {
             loggedIn: true,
             waiting: false
           },
-          "Получение информации о пользователе"
+          "Получение информации о сессии"
         );
       } catch (error) {
         console.log(error);
+        this.setState(
+          {
+            ...this.getState(),
+            waiting: false
+          },
+          "Ошибка получения информации о сессии"
+        );
       }
     }
   }
 
   /**
-   * Удаление информации о пользователе
+   * Завершение сессии
    */
   async removeUserInfo() {
     this.setState(
@@ -63,7 +70,7 @@ class SessionStore extends StoreModule {
         waiting: false,
         loggedIn: false,
       },
-      "Удаление информации о пользователе"
+      "Завершение сессии"
     );
     window.localStorage.clear();
     // try {

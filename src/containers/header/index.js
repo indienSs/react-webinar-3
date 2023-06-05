@@ -17,7 +17,7 @@ function Header({title}) {
   }));
 
   const callbacks = {
-    onExitAccount: useCallback(() => {store.actions.session.removeUserInfo()}, [select.userName])
+    onExitAccount: useCallback(() => {store.actions.session.removeUserInfo(); store.actions.user.logout()}, [select.loggedIn])
   }
 
   return (

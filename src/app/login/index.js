@@ -6,44 +6,42 @@ import Navigation from "../../containers/navigation";
 import Spinner from "../../components/spinner";
 import LoginForm from "../../components/login-form";
 import Header from "../../containers/header";
-import {Navigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import useTranslate from "../../hooks/use-translate";
 
 function Login() {
   const store = useStore();
   const {t} = useTranslate();
+  const token = window.localStorage.getItem("token");
+  const navigate = useNavigate();
 
   const select = useSelector(state => ({
     userName: state.session.userInfo.name,
+    waiting: state.session.waiting,
+    loggedIn: state.session.loggedIn,
     message: state.user.error,
-    waiting: state.user.waiting,
-    loggedIn: state.user.loggedIn,
   }));
 
   const [errorMessage, setErrorMessage] = useState("");
 
   const callbacks = {
     // Отправка логин-формы на сервер
-    onSendForm: useCallback(
-      userData => {
-        store.actions.user.login(userData);
-        setErrorMessage(select.message);
-      },
-      [store]
-    ),
+    onSendForm: useCallback(userData => {store.actions.user.login(userData); setErrorMessage(select.message)}, [store]),
   };
 
-  if (select.loggedIn || select.userName) {
-    return <Navigate to="/profile" />;
-  }
+  useEffect(() => {
+    if (token) {
+      navigate("/profile")
+    }
+  }, [token, select.loggedIn, select.waiting, select.message])
 
   return (
     <PageLayout>
       <Header title={t("title")} />
       <Navigation />
-      <Spinner active={select.waiting}>
+      {/* <Spinner active={select.waiting}> */}
         <LoginForm onSendForm={callbacks.onSendForm} errorMessage={errorMessage} t={t} />
-      </Spinner>
+      {/* </Spinner> */}
     </PageLayout>
   );
 }

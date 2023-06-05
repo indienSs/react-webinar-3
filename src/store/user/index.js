@@ -12,8 +12,6 @@ class UserInfo extends StoreModule {
         email: "",
       },
       error: "",
-      loggedIn: false,
-      waiting: false,
     };
   }
 
@@ -33,17 +31,7 @@ class UserInfo extends StoreModule {
       const json = await response.json();
       const item = json;
 
-      if (item.error) {
-        const errorsArray = item.error.data.issues.map(issue => issue.message);
-        const errorMessage = errorsArray.join(", ");
-        this.setState(
-          {
-            ...this.getState(),
-            error: errorMessage,
-          },
-          "Получена ошибка авторизации"
-        );
-      } else {
+      if (!item.error) {
         this.setState(
           {
             ...this.getState(),
@@ -53,18 +41,42 @@ class UserInfo extends StoreModule {
               email: item.result.user.email,
             },
             error: "",
-            loggedIn: true,
-            waiting: false,
           },
           "Авторизация пользователя"
         );
         window.localStorage.setItem("token", item.result.token);
+      } else {
+        const errorsArray = item.error.data.issues.map(issue => issue.message);
+        const errorMessage = errorsArray.join(", ");
+        this.setState(
+          {
+            ...this.getState(),
+            error: errorMessage,
+          },
+          "Получена ошибка авторизации"
+        );
       }
     } catch (error) {
       console.log(error);
     }
   }
 
+  /**
+   * Завершение сессии
+   */
+  async logout() {
+    this.setState(
+      {
+        userInfo: {
+          name: "",
+          phone: "",
+          email: "",
+        },
+        error: "",
+      },
+      "Удаление информации о пользователе из store"
+    );
+  }
 }
 
 export default UserInfo;
