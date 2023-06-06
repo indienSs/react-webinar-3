@@ -1,7 +1,7 @@
 import StoreModule from "../module";
 
 /**
- * Покупательская корзина
+ * Информация о пользователе
  */
 class UserInfo extends StoreModule {
   initState() {
@@ -55,6 +55,7 @@ class UserInfo extends StoreModule {
           },
           "Получена ошибка авторизации"
         );
+        //window.localStorage.clear();
       }
     } catch (error) {
       console.log(error);

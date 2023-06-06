@@ -1,7 +1,7 @@
 import StoreModule from "../module";
 
 /**
- * Покупательская корзина
+ * Информация о сессии
  */
 class SessionStore extends StoreModule {
   initState() {
@@ -51,6 +51,7 @@ class SessionStore extends StoreModule {
           },
           "Ошибка получения информации о сессии"
         );
+        //window.localStorage.clear();
       }
     }
   }
