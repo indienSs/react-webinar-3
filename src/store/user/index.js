@@ -32,6 +32,7 @@ class UserInfo extends StoreModule {
       const item = json;
 
       if (!item.error) {
+        this.store.actions.session.setLoggedIn(true);
         this.setState(
           {
             ...this.getState(),

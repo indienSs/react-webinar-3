@@ -32,7 +32,7 @@ function Login() {
       navigate("/profile")
     }
     store.actions.user.resetErrors();
-  }, [token, select.loggedIn, select.waiting])
+  }, [token, select.loggedIn])
 
   return (
     <PageLayout>

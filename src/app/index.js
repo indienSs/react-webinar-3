@@ -15,17 +15,16 @@ import useInit from '../hooks/use-init';
  */
 function App() {
   const store = useStore();
-  const token = window.localStorage.getItem("token");
   
   const select = useSelector(state => ({
     activeModal: state.modals.name,
     loggedIn: state.session.loggedIn,
-    userName: state.user.userInfo.name,
+    token: state.session.token,
   }));
   
   useInit(() => {
     store.actions.session.getUserInfo();
-  }, [token, select.userName])
+  }, [select.loggedIn])
 
   return (
     <>

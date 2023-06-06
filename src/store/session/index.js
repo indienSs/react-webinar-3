@@ -11,6 +11,7 @@ class SessionStore extends StoreModule {
         phone: "",
         email: "",
       },
+      token: window.localStorage.getItem("token"),
       loggedIn: false,
       waiting: true,
     };
@@ -33,12 +34,15 @@ class SessionStore extends StoreModule {
         const json = await response.json();
         const item = json.result;
 
+        // console.log(json)
+
         this.setState(
           {
             ...this.getState(),
             userInfo: {name: item.profile.name, phone: item.profile.phone, email: item.email},
             loggedIn: true,
-            waiting: false
+            waiting: false,
+            token: token,
           },
           "Получение информации о сессии"
         );
@@ -53,6 +57,20 @@ class SessionStore extends StoreModule {
         );
         //window.localStorage.clear();
       }
+    } else {
+      this.setState(
+        {
+          userInfo: {
+            name: "",
+            phone: "",
+            email: "",
+          },
+          error: "",
+          waiting: false,
+          loggedIn: false,
+        },
+        "Токен авторизации отсутствует, обнуление параметров пользователя"
+      );
     }
   }
 
@@ -87,6 +105,19 @@ class SessionStore extends StoreModule {
     // } catch (error) {
     //   console.log(error);
     // }
+  }
+
+  /**
+   * @param {boolean} logged 
+   */
+  setLoggedIn(logged) {
+    this.setState(
+      {
+        ...this.getState(),
+        loggedIn: logged,
+      },
+      "Установка флага авторизации"
+    );
   }
 }
 
