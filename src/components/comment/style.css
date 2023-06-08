@@ -1,0 +1,21 @@
+.Comment-info {
+  display: flex;
+  gap: 20px;
+}
+
+.Comment {
+  padding: 0 40px;
+}
+
+.Comment-answer {
+  color: #0087E9;
+  cursor: pointer;
+}
+
+.Comment-date {
+  color: #666666;
+}
+
+.Comment-user {
+  font-weight: 600;
+}

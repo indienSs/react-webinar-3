@@ -1,0 +1,8 @@
+.EnterRequirement {
+  display: flex;
+  align-items: center;
+}
+
+.EnterRequirement-hidden {
+  display: none;
+}
