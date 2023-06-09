@@ -6,35 +6,36 @@ import CommentWriter from "../comment-writer";
 import dateFormat from "../../utils/date-format";
 import EnterRequirement from "../enter-requirement";
 
-function Comment({commentData, onAnswer, onChoseComment, exists, chosenComment}) {
+function Comment(props) {
   const cn = bem("Comment");
 
-  const formatedDate = dateFormat(commentData.dateCreate);
+  const formatedDate = dateFormat(props.commentData.dateCreate);
 
   return (
     <>
       <div className={cn()}>
         <div className={cn("info")}>
-          <p className={cn("user")}>{commentData.author.profile.name}</p>
+          <p className={cn(props.userId === props.commentData.author._id ? "chosen-user" : "user")}>{props.commentData.author.profile.name}</p>
           <p className={cn("date")}>{formatedDate}</p>
         </div>
         <div className={cn("text")}>
-          {commentData.isDeleted ? <p className={cn("deleted")}>Комментарий удален</p> : commentData.text}
+          {props.commentData.isDeleted ? <p className={cn("deleted")}>Комментарий удален</p> : props.commentData.text}
         </div>
-        <p className={cn("answer")} onClick={() => onChoseComment(commentData._id)}>
+        <p className={cn("answer")} onClick={() => props.onChoseComment(props.commentData._id)}>
           Ответить
         </p>
       </div>
       <CommentWriter
-        visible={exists && commentData._id === chosenComment}
-        onAnswer={onAnswer}
-        chosenComment={chosenComment}
-        onChoseComment={onChoseComment}
+        visible={props.exists && props.commentData._id === props.chosenComment}
+        onSendComment={props.onSendComment}
+        chosenComment={props.chosenComment}
+        onChoseComment={props.onChoseComment}
+        articleId={props.articleId}
       />
       <EnterRequirement
-        visible={!exists && commentData._id === chosenComment}
-        chosenComment={chosenComment}
-        onChoseComment={onChoseComment}
+        visible={!props.exists && props.commentData._id === props.chosenComment}
+        chosenComment={props.chosenComment}
+        onChoseComment={props.onChoseComment}
       />
     </>
   );
@@ -56,17 +57,20 @@ Comment.propTypes = {
     text: PropTypes.string,
     isDeleted: PropTypes.bool,
   }).isRequired,
-  onAnswer: PropTypes.func,
+  onSendComment: PropTypes.func,
   exists: PropTypes.bool,
   onChoseComment: PropTypes.func,
+  articleId: PropTypes.string,
+  userId: PropTypes.string,
   chosenComment: PropTypes.oneOfType([PropTypes.string, PropTypes.oneOf([null])]),
 };
 
 Comment.defaultProps = {
-  onAnswer: () => {},
-  onChoseComment: () => {},
   chosenComment: null,
   exists: false,
+  articleId: "",
+  onSendComment: () => {},
+  onChoseComment: () => {},
 };
 
 export default memo(Comment);

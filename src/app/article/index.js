@@ -53,7 +53,7 @@ function Article() {
       <Spinner active={select.waiting}>
         <ArticleCard article={select.article} onAdd={callbacks.addToBasket} t={t}/>
       </Spinner>
-      <CommentsSection />
+      <CommentsSection articleId={params.id}/>
     </PageLayout>
   );
 }

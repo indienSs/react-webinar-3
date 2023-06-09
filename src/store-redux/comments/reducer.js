@@ -13,7 +13,7 @@ function reducer(state = initialState, action) {
 
     case "comments/load-success":
       return { ...state, data: action.payload.data, waiting: false, chosenComment: null};
-
+    
     case "comments/chose-comment":
       return { ...state, chosenComment: action.payload};
 
