@@ -1,59 +1,72 @@
 import {memo, useState} from "react";
-import PropTypes from 'prop-types';
-import {cn as bem} from '@bem-react/classname';
-import './style.css';
+import PropTypes from "prop-types";
+import {cn as bem} from "@bem-react/classname";
+import "./style.css";
 import CommentWriter from "../comment-writer";
+import dateFormat from "../../utils/date-format";
+import EnterRequirement from "../enter-requirement";
 
-function Comment({commentData, onAnswer}) {
+function Comment({commentData, onAnswer, onChoseComment, exists, chosenComment}) {
+  const cn = bem("Comment");
 
-  const cn = bem('Comment');
-
-  const [visibleAnswer, setVisibleAnswer] = useState(false);
-
-  const options = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    timezone: 'UTC',
-    hour: 'numeric',
-    minute: 'numeric',
-  };
-
-  const formatDate = new Date(commentData.dateCreate).toLocaleString("ru", options).replace(/\s*г\.,/, " в");
+  const formatedDate = dateFormat(commentData.dateCreate);
 
   return (
-    <div className={cn()}>
-      <div className={cn("info")}>
-        <p className={cn("user")}>{commentData.author._id}</p>
-        <p className={cn("date")}>{formatDate}</p>
+    <>
+      <div className={cn()}>
+        <div className={cn("info")}>
+          <p className={cn("user")}>{commentData.author.profile.name}</p>
+          <p className={cn("date")}>{formatedDate}</p>
+        </div>
+        <div className={cn("text")}>
+          {commentData.isDeleted ? <p className={cn("deleted")}>Комментарий удален</p> : commentData.text}
+        </div>
+        <p className={cn("answer")} onClick={() => onChoseComment(commentData._id)}>
+          Ответить
+        </p>
       </div>
-      <div>
-        {commentData.text}
-      </div>
-      <p className={cn("answer")} onClick={() => setVisibleAnswer(true)}>Ответить</p>
-      <CommentWriter visible={visibleAnswer} onAnswer={onAnswer} />
-    </div>
-  )
+      <CommentWriter
+        visible={exists && commentData._id === chosenComment}
+        onAnswer={onAnswer}
+        chosenComment={chosenComment}
+        onChoseComment={onChoseComment}
+      />
+      <EnterRequirement
+        visible={!exists && commentData._id === chosenComment}
+        chosenComment={chosenComment}
+        onChoseComment={onChoseComment}
+      />
+    </>
+  );
 }
 
 Comment.propTypes = {
   commentData: PropTypes.shape({
     parent: PropTypes.shape({
       _id: PropTypes.string,
+      type: PropTypes.string,
     }),
     author: PropTypes.shape({
       _id: PropTypes.string,
+      profile: PropTypes.shape({
+        name: PropTypes.string,
+      }),
     }),
     dateCreate: PropTypes.string,
-    dateUpdate: PropTypes.string,
     text: PropTypes.string,
     isDeleted: PropTypes.bool,
   }).isRequired,
   onAnswer: PropTypes.func,
+  exists: PropTypes.bool,
+  onChoseComment: PropTypes.func,
+  chosenComment: PropTypes.oneOfType([PropTypes.string, PropTypes.oneOf([null])]),
 };
 
 Comment.defaultProps = {
-  onAnswer: () => {}
-}
+  onAnswer: () => {},
+  onChoseComment: () => {},
+  chosenComment: null,
+  exists: false,
+};
 
 export default memo(Comment);

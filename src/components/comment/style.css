@@ -10,6 +10,8 @@
 .Comment-answer {
   color: #0087E9;
   cursor: pointer;
+  padding: 10px 0;
+  margin: 0;
 }
 
 .Comment-date {
@@ -18,4 +20,13 @@
 
 .Comment-user {
   font-weight: 600;
+}
+
+.Comment-deleted {
+  color: #666666;
+  margin: 0;
+}
+
+.Comment-text {
+  padding-bottom: 10px;
 }

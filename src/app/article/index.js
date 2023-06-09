@@ -1,7 +1,6 @@
 import {memo, useCallback, useMemo} from 'react';
 import {useParams} from "react-router-dom";
 import useStore from "../../hooks/use-store";
-import useSelector from "../../hooks/use-selector";
 import useTranslate from "../../hooks/use-translate";
 import useInit from "../../hooks/use-init";
 import PageLayout from "../../components/page-layout";
@@ -27,7 +26,7 @@ function Article() {
   useInit(() => {
     //store.actions.article.load(params.id);
     dispatch(articleActions.load(params.id));
-    dispatch(commentsActions.load());
+    dispatch(commentsActions.load(params.id));
   }, [params.id]);
 
   const select = useSelectorRedux(state => ({

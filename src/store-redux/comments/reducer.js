@@ -1,6 +1,7 @@
 // Начальное состояние
 const initialState = {
   data: [],
+  chosenComment: null,
   waiting: false // признак ожидания загрузки
 }
 
@@ -11,7 +12,10 @@ function reducer(state = initialState, action) {
       return { ...state, data: [], waiting: true};
 
     case "comments/load-success":
-      return { ...state, data: action.payload.data, waiting: false};
+      return { ...state, data: action.payload.data, waiting: false, chosenComment: null};
+
+    case "comments/chose-comment":
+      return { ...state, chosenComment: action.payload};
 
     case "comments/load-error":
       return { ...state, data: [], waiting: false};
