@@ -15,7 +15,7 @@ function CommentWriter({visible, onSendComment, chosenComment, onChoseComment, a
   const onClickSend = _ => {
     console.log(chosenComment)
     if (commentText.length > 0) {
-      onSendComment({text: commentText, parent: {_id: chosenComment || articleId, _type: chosenComment ? "comment" : "article"}});
+      onSendComment(commentText);
       setCommentText("");
     }
   };

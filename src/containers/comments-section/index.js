@@ -14,7 +14,6 @@ import listToTree from "../../utils/list-to-tree";
 import treeToList from "../../utils/tree-to-list";
 
 function CommentsSection({articleId}) {
-
   const dispatch = useDispatch();
 
   const selectRedux = useSelectorRedux(
@@ -31,20 +30,27 @@ function CommentsSection({articleId}) {
     userId: state.session.user._id,
   }));
 
-  const parsedComments = treeToList(listToTree(selectRedux.comments, (item) => item.parent._type === 'comment'), (comment, level) => ({
-    ...comment,
-    level,
-  }));
+  const parsedComments = treeToList(
+    listToTree(selectRedux.comments, item => item.parent._type === "comment"),
+    (comment, level) => ({
+      ...comment,
+      level,
+    })
+  );
 
   const callbacks = {
     // Выбор комментария для ответа
     choseComment: useCallback(id => {
-        dispatch(commentsActions.choseComment(id));
-      }, []),
+      dispatch(commentsActions.choseComment(id));
+    }, []),
     // Отправка комментария на сервер
     sendComment: useCallback(comment => {
-      dispatch(commentsActions.sendComment(comment));
-    }, []),
+      const commentToSend = {
+        text: comment,
+        parent: {_id: selectRedux.chosenComment || articleId, _type: selectRedux.chosenComment ? "comment" : "article"},
+      };
+      dispatch(commentsActions.sendComment(commentToSend));
+    }, [selectRedux.chosenComment]),
   };
 
   return (
@@ -62,14 +68,18 @@ function CommentsSection({articleId}) {
           userId={select.userId}
         />
       ))}
-      <EnterRequirement visible={!select.exists && !selectRedux.chosenComment}/>
-      <CommentWriter visible={select.exists && !selectRedux.chosenComment} articleId={articleId} onSendComment={callbacks.sendComment}/>
+      <EnterRequirement visible={!select.exists && !selectRedux.chosenComment} />
+      <CommentWriter
+        visible={select.exists && !selectRedux.chosenComment}
+        articleId={articleId}
+        onSendComment={callbacks.sendComment}
+      />
     </Spinner>
   );
 }
 
 CommentsSection.propTypes = {
   articleId: PropTypes.string.isRequired,
-}
+};
 
 export default memo(CommentsSection);
