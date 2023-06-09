@@ -12,7 +12,7 @@ function CommentWriter({visible, onSendComment, chosenComment, onChoseComment, a
     setCommentText(e.target.value);
   };
 
-  const onClickSend = () => {
+  const onClickSend = e => {
     onSendComment({text: commentText, parent: {_id: chosenComment || articleId, _type: chosenComment ? "comment" : "article"}});
   };
 

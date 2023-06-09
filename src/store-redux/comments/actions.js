@@ -15,7 +15,6 @@ export default {
         });
         // Комментарии загружены успешно
         dispatch({type: "comments/load-success", payload: {data: res.data.result.items}});
-        console.log(res.data.result.items);
       } catch (e) {
         //Ошибка загрузки
         dispatch({type: "comments/load-error"});

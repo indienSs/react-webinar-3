@@ -11,6 +11,7 @@ import CommentWriter from "../../components/comment-writer";
 import useSelector from "../../hooks/use-selector";
 import commentsActions from "../../store-redux/comments/actions";
 import listToTree from "../../utils/list-to-tree";
+import treeToList from "../../utils/tree-to-list";
 
 function CommentsSection({articleId}) {
 
@@ -30,14 +31,10 @@ function CommentsSection({articleId}) {
     userId: state.session.user._id,
   }));
 
-  const commentsList = selectRedux.comments.map(comment => {
-    if (comment.parent._id === articleId) {
-      return {...comment, parent: null}
-    }
-    return comment
-  })
-  const parsedComments = listToTree(commentsList);
-  console.log(parsedComments);
+  const parsedComments = treeToList(listToTree(selectRedux.comments, (item) => item.parent._type === 'comment'), (comment, level) => ({
+    ...comment,
+    level,
+  }));
 
   const callbacks = {
     // Выбор комментария для ответа
@@ -53,7 +50,7 @@ function CommentsSection({articleId}) {
   return (
     <Spinner active={selectRedux.waiting}>
       <CommentsAmount amount={selectRedux.comments.length} />
-      {selectRedux.comments.map(comment => (
+      {parsedComments.map(comment => (
         <Comment
           key={comment._id}
           commentData={comment}
