@@ -62,8 +62,8 @@ function CommentsSection({articleId}) {
           userId={select.userId}
         />
       ))}
-      <EnterRequirement visible={!select.exists && !selectRedux.chosenComment} />
-      <CommentWriter visible={select.exists && !selectRedux.chosenComment} articleId={articleId}/>
+      <EnterRequirement visible={!select.exists && !selectRedux.chosenComment}/>
+      <CommentWriter visible={select.exists && !selectRedux.chosenComment} articleId={articleId} onSendComment={callbacks.sendComment}/>
     </Spinner>
   );
 }
