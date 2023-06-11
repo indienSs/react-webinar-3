@@ -12,11 +12,12 @@ import useSelector from "../../hooks/use-selector";
 import commentsActions from "../../store-redux/comments/actions";
 import listToTree from "../../utils/list-to-tree";
 import treeToList from "../../utils/tree-to-list";
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 
 function CommentsSection({articleId}) {
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const selectRedux = useSelectorRedux(
     state => ({
@@ -53,6 +54,7 @@ function CommentsSection({articleId}) {
       };
       dispatch(commentsActions.sendComment(commentToSend));
     }, [selectRedux.chosenComment]),
+    onNavigate: useCallback(() => navigate("/login", {state: {back: location.pathname}}), [location.pathname])
   };
 
   return (
@@ -68,9 +70,10 @@ function CommentsSection({articleId}) {
           onChoseComment={callbacks.choseComment}
           onSendComment={callbacks.sendComment}
           userId={select.userId}
+          onNavigate={callbacks.onNavigate}
         />
       ))}
-      <EnterRequirement visible={!select.exists && !selectRedux.chosenComment}/>
+      <EnterRequirement visible={!select.exists && !selectRedux.chosenComment} onNavigate={callbacks.onNavigate}/>
       <CommentWriter
         visible={select.exists && !selectRedux.chosenComment}
         articleId={articleId}

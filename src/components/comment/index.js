@@ -1,4 +1,4 @@
-import {memo, useState} from "react";
+import {memo} from "react";
 import PropTypes from "prop-types";
 import {cn as bem} from "@bem-react/classname";
 import "./style.css";
@@ -36,6 +36,7 @@ function Comment(props) {
         visible={!props.exists && props.commentData._id === props.chosenComment}
         chosenComment={props.chosenComment}
         onChoseComment={props.onChoseComment}
+        onNavigate={props.onNavigate}
       />
     </div>
   );
@@ -61,6 +62,7 @@ Comment.propTypes = {
   onSendComment: PropTypes.func,
   exists: PropTypes.bool,
   onChoseComment: PropTypes.func,
+  onNavigate: PropTypes.func,
   articleId: PropTypes.string,
   userId: PropTypes.string,
   chosenComment: PropTypes.oneOfType([PropTypes.string, PropTypes.oneOf([null])]),
@@ -72,6 +74,7 @@ Comment.defaultProps = {
   articleId: "",
   onSendComment: () => {},
   onChoseComment: () => {},
+  onNavigate: () => {},
 };
 
 export default memo(Comment);

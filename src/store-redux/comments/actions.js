@@ -15,7 +15,6 @@ export default {
         });
         // Комментарии загружены успешно
         dispatch({type: "comments/load-success", payload: {data: res.data.result.items}});
-        console.log(res.data.result.items)
       } catch (e) {
         //Ошибка загрузки
         dispatch({type: "comments/load-error"});
@@ -36,7 +35,6 @@ export default {
           method: "POST",
           body: JSON.stringify(comment),
         });
-        console.log(commentRes.data.result)
         dispatch({type: "comments/add-comment", payload: commentRes.data.result});
         dispatch({type: "comments/chose-comment", payload: null})
       } catch (e) {
