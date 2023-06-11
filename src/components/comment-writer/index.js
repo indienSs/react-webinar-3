@@ -14,19 +14,21 @@ function CommentWriter({visible, onSendComment, chosenComment, onChoseComment, a
 
   const onClickSend = _ => {
     console.log(chosenComment)
-    if (commentText.length > 0) {
+    if (commentText.trim().length > 0) {
       onSendComment(commentText);
       setCommentText("");
     }
   };
 
   return (
-    <div className={cn(`${visible ? "" : "hidden"}`)}>
-      <p>{`Новый ${chosenComment ? "ответ" : "комментарий"}`}</p>
-      <textarea type="textarea" value={commentText} onChange={changeText} />
-      <div className={cn("buttons")}>
-        <button onClick={onClickSend}>Отправить</button>
-        {chosenComment && <button onClick={() => onChoseComment(null)}>Отмена</button>}
+    <div style={{paddingLeft: chosenComment ? 30 : 0}}>
+      <div className={cn(`${visible ? "" : "hidden"}`)}>
+        <p className={cn("write")}>{`Новый ${chosenComment ? "ответ" : "комментарий"}`}</p>
+        <textarea type="textarea" value={commentText} onChange={changeText} />
+        <div className={cn("buttons")}>
+          <button onClick={onClickSend}>Отправить</button>
+          {chosenComment && <button onClick={() => onChoseComment(null)}>Отмена</button>}
+        </div>
       </div>
     </div>
   );

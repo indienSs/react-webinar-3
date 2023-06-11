@@ -12,7 +12,7 @@ function Comment(props) {
   const formatedDate = dateFormat(props.commentData.dateCreate);
 
   return (
-    <div style={{paddingLeft: props.commentData.level * 20}}>
+    <div style={{paddingLeft: props.commentData.level < 14 ? props.commentData.level * 30 : 390}}>
       <div className={cn()}>
         <div className={cn("info")}>
           <p className={cn(props.userId === props.commentData.author._id ? "chosen-user" : "user")}>{props.commentData.author.profile.name}</p>

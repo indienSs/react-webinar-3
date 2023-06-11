@@ -12,9 +12,11 @@ import useSelector from "../../hooks/use-selector";
 import commentsActions from "../../store-redux/comments/actions";
 import listToTree from "../../utils/list-to-tree";
 import treeToList from "../../utils/tree-to-list";
+import {useLocation} from "react-router-dom";
 
 function CommentsSection({articleId}) {
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const selectRedux = useSelectorRedux(
     state => ({
@@ -68,7 +70,7 @@ function CommentsSection({articleId}) {
           userId={select.userId}
         />
       ))}
-      <EnterRequirement visible={!select.exists && !selectRedux.chosenComment} />
+      <EnterRequirement visible={!select.exists && !selectRedux.chosenComment}/>
       <CommentWriter
         visible={select.exists && !selectRedux.chosenComment}
         articleId={articleId}

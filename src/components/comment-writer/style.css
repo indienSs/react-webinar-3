@@ -5,12 +5,7 @@
   gap: 10px;
   width: auto;
   padding: 0 40px;
-  padding-bottom: 10px;
-}
-
-.CommentWriter p {
-  font-weight: 600;
-  margin-bottom: 0;
+  padding-bottom: 30px;
 }
 
 .CommentWriter-hidden {
@@ -18,7 +13,7 @@
 }
 
 .CommentWriter textarea {
-  min-height: 60px;
+  min-height: 80px;
   border: 1px solid #767676;
   resize: none;
   font-family: Arial, Helvetica, sans-serif;
@@ -27,9 +22,20 @@
   outline: 0;
   outline-offset: 0;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .CommentWriter-buttons {
   display: flex;
   gap: 10px;
+}
+
+.CommentWriter-write {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.CommentWriter button {
+  font-size: 13px;
 }

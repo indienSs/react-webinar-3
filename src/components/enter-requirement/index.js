@@ -9,10 +9,12 @@ function EnterRequirement({link, visible, chosenComment, onChoseComment}) {
   const cn = bem("EnterRequirement");
 
   return (
-      <div className={cn(visible ? "" : "hidden")}>
-        <Link to={link}>Войдите</Link>
-        <p>, чтобы иметь возможность {chosenComment ? "ответить" : "комментировать"}.&nbsp;</p>
-        {chosenComment && <p className={cn("cancel")} onClick={() => onChoseComment(null)}>Отмена</p>}
+      <div style={{paddingLeft: chosenComment ? 30 : 0}}>
+        <div className={cn(visible ? "" : "hidden")}>
+          <Link to={link}>Войдите</Link>
+          <p>, чтобы иметь возможность {chosenComment ? "ответить" : "комментировать"}.&nbsp;</p>
+          {chosenComment && <p className={cn("cancel")} onClick={() => onChoseComment(null)}>Отмена</p>}
+        </div>
       </div>
   );
 }
