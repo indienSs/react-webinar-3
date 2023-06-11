@@ -69,7 +69,7 @@ function CommentsSection({articleId}) {
           onSendComment={callbacks.sendComment}
           userId={select.userId}
           onNavigate={callbacks.onNavigate}
-          hasChild={selectRedux.chosenComment !== null && selectRedux.chosenComment !== commentId}
+          hasChild={selectRedux.chosenComment !== commentId}
         />
       ))}
       <EnterRequirement visible={!select.exists && !selectRedux.chosenComment} onNavigate={callbacks.onNavigate} hasChild={true}/>
