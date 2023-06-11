@@ -33,13 +33,8 @@ function CommentsSection({articleId}) {
     userId: state.session.user._id,
   }));
 
-  const parsedComments = treeToList(
-    listToTree(selectRedux.comments, item => item.parent._type === "comment"),
-    (comment, level) => ({
-      ...comment,
-      level,
-    })
-  );
+  const commentsTree = listToTree(selectRedux.comments, item => item.parent._type === "comment");
+  const commentsList = treeToList(commentsTree, (comment, level) => ({...comment, level}));
 
   const callbacks = {
     // Выбор комментария для ответа
@@ -60,7 +55,7 @@ function CommentsSection({articleId}) {
   return (
     <Spinner active={selectRedux.waiting}>
       <CommentsAmount amount={selectRedux.comments.length} />
-      {parsedComments.map(comment => (
+      {commentsList.map(comment => (
         <Comment
           key={comment._id}
           commentData={comment}
