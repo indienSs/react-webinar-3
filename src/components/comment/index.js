@@ -31,12 +31,14 @@ function Comment(props) {
         chosenComment={props.chosenComment}
         onChoseComment={props.onChoseComment}
         articleId={props.articleId}
+        hasChild={props.hasChild}
       />
       <EnterRequirement
         visible={!props.exists && props.commentData._id === props.chosenComment}
         chosenComment={props.chosenComment}
         onChoseComment={props.onChoseComment}
         onNavigate={props.onNavigate}
+        hasChild={props.hasChild}
       />
     </div>
   );
@@ -65,6 +67,7 @@ Comment.propTypes = {
   onNavigate: PropTypes.func,
   articleId: PropTypes.string,
   userId: PropTypes.string,
+  hasChild: PropTypes.bool,
   chosenComment: PropTypes.oneOfType([PropTypes.string, PropTypes.oneOf([null])]),
 };
 
@@ -72,6 +75,7 @@ Comment.defaultProps = {
   chosenComment: null,
   exists: false,
   articleId: "",
+  hasChild: false,
   onSendComment: () => {},
   onChoseComment: () => {},
   onNavigate: () => {},

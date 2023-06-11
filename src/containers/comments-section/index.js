@@ -13,6 +13,7 @@ import commentsActions from "../../store-redux/comments/actions";
 import listToTree from "../../utils/list-to-tree";
 import treeToList from "../../utils/tree-to-list";
 import {useLocation, useNavigate} from "react-router-dom";
+import findChildId from "../../utils/find-child";
 
 function CommentsSection({articleId}) {
   const dispatch = useDispatch();
@@ -35,6 +36,8 @@ function CommentsSection({articleId}) {
 
   const commentsTree = listToTree(selectRedux.comments, item => item.parent._type === "comment");
   const commentsList = treeToList(commentsTree, (comment, level) => ({...comment, level}));
+  const parentsComment = listToTree(selectRedux.comments, item => item.parent._id === selectRedux.chosenComment);
+  const commentId = findChildId(parentsComment, selectRedux.chosenComment);
 
   const callbacks = {
     // Выбор комментария для ответа
@@ -61,18 +64,20 @@ function CommentsSection({articleId}) {
           commentData={comment}
           exists={select.exists}
           articleId={articleId}
-          chosenComment={selectRedux.chosenComment}
+          chosenComment={commentId}
           onChoseComment={callbacks.choseComment}
           onSendComment={callbacks.sendComment}
           userId={select.userId}
           onNavigate={callbacks.onNavigate}
+          hasChild={selectRedux.chosenComment !== null && selectRedux.chosenComment !== commentId}
         />
       ))}
-      <EnterRequirement visible={!select.exists && !selectRedux.chosenComment} onNavigate={callbacks.onNavigate}/>
+      <EnterRequirement visible={!select.exists && !selectRedux.chosenComment} onNavigate={callbacks.onNavigate} hasChild={true}/>
       <CommentWriter
         visible={select.exists && !selectRedux.chosenComment}
         articleId={articleId}
         onSendComment={callbacks.sendComment}
+        hasChild={true}
       />
     </Spinner>
   );

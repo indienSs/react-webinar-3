@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {cn as bem} from "@bem-react/classname";
 import "./style.css";
 
-function CommentWriter({visible, onSendComment, chosenComment, onChoseComment, articleId}) {
+function CommentWriter({visible, onSendComment, chosenComment, onChoseComment, articleId, hasChild}) {
   const cn = bem("CommentWriter");
 
   const [commentText, setCommentText] = useState("");
@@ -21,7 +21,7 @@ function CommentWriter({visible, onSendComment, chosenComment, onChoseComment, a
   };
 
   return (
-    <div style={{paddingLeft: chosenComment ? 30 : 0}}>
+    <div style={{paddingLeft: !hasChild ? 30 : 0}}>
       <div className={cn(`${visible ? "" : "hidden"}`)}>
         <p className={cn("write")}>{`Новый ${chosenComment ? "ответ" : "комментарий"}`}</p>
         <textarea type="textarea" value={commentText} onChange={changeText} />
@@ -39,6 +39,7 @@ CommentWriter.propTypes = {
   onSendComment: PropTypes.func,
   onChoseComment: PropTypes.func,
   articleId: PropTypes.string,
+  hasChild: PropTypes.bool,
   chosenComment: PropTypes.oneOfType([PropTypes.string, PropTypes.oneOf([null])]),
 };
 
@@ -46,6 +47,7 @@ CommentWriter.defaultProps = {
   visible: false,
   chosenComment: null,
   articleId: "",
+  hasChild: false,
   onSendComment: () => {},
   onChoseComment: () => {},
 };

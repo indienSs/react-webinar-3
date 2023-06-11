@@ -3,12 +3,12 @@ import PropTypes from "prop-types";
 import {cn as bem} from "@bem-react/classname";
 import "./style.css";
 
-function EnterRequirement({visible, chosenComment, onChoseComment, onNavigate}) {
+function EnterRequirement({visible, chosenComment, onChoseComment, onNavigate, hasChild}) {
   
   const cn = bem("EnterRequirement");
 
   return (
-      <div style={{paddingLeft: chosenComment ? 30 : 0}}>
+      <div style={{paddingLeft: !hasChild ? 30 : 0}}>
         <div className={cn(visible ? "" : "hidden")}>
           <a onClick={onNavigate} className={cn("link")}>Войдите</a>
           <p>, чтобы иметь возможность {chosenComment ? "ответить" : "комментировать"}.&nbsp;</p>
@@ -21,13 +21,15 @@ function EnterRequirement({visible, chosenComment, onChoseComment, onNavigate}) 
 EnterRequirement.propTypes = {
   visible: PropTypes.bool,
   onChoseComment: PropTypes.func,
-  chosenComment: PropTypes.oneOfType([PropTypes.string, PropTypes.oneOf([null])]),
   onNavigate: PropTypes.func,
+  hasChild: PropTypes.bool,
+  chosenComment: PropTypes.oneOfType([PropTypes.string, PropTypes.oneOf([null])]),
 };
 
 EnterRequirement.defaultProps = {
   visible: false,
   chosenComment: null,
+  hasChild: false,
   onChoseComment: () => {},
   onNavigate: () => {},
 };
