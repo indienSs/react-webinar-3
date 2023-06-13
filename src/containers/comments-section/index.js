@@ -46,7 +46,7 @@ function CommentsSection({articleId}) {
     // Выбор комментария для ответа
     choseComment: useCallback(id => {
       dispatch(commentsActions.choseComment(id));
-      setTimeout(() => answerRef.current.scrollIntoView({block: "center"}), 1)
+      if (id !== null) setTimeout(() => answerRef.current.scrollIntoView({block: "center"}), 1);
     }, []),
     // Отправка комментария на сервер
     sendComment: useCallback(comment => {
