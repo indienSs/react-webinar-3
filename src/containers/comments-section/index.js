@@ -46,6 +46,7 @@ function CommentsSection({articleId}) {
     // Выбор комментария для ответа
     choseComment: useCallback(id => {
       dispatch(commentsActions.choseComment(id));
+      setTimeout(() => answerRef.current.scrollIntoView({block: "center"}), 1)
     }, []),
     // Отправка комментария на сервер
     sendComment: useCallback(comment => {
@@ -54,10 +55,8 @@ function CommentsSection({articleId}) {
           parent: {
             _id: selectRedux.chosenComment || articleId,
             _type: selectRedux.chosenComment ? "comment" : "article",
-          },
-        };
+          }};
         dispatch(commentsActions.sendComment(commentToSend));
-        answerRef.current.focus();
       }, [selectRedux.chosenComment]),
     onNavigate: useCallback(() => navigate("/login", {state: {back: location.pathname}}), [location.pathname]),
   };

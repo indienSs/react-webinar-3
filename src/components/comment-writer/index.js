@@ -13,7 +13,6 @@ function CommentWriter({visible, onSendComment, chosenComment, onChoseComment, h
   };
 
   const onClickSend = _ => {
-    console.log(chosenComment)
     if (commentText.trim().length > 0) {
       onSendComment(commentText);
       setCommentText("");

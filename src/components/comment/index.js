@@ -11,6 +11,10 @@ function Comment(props) {
 
   const formatedDate = dateFormat(props.commentData.dateCreate);
 
+  const handleChoseComment = () => {
+    props.onChoseComment(props.commentData._id);
+  }
+
   return (
     <div style={{paddingLeft: props.commentData.level < 11 ? props.commentData.level * 30 : 300}}>
       <div className={cn()}>
@@ -21,7 +25,7 @@ function Comment(props) {
         <div className={cn("text")}>
           {props.commentData.isDeleted ? <p className={cn("deleted")}>Комментарий удален</p> : props.commentData.text}
         </div>
-        <p className={cn("answer")} onClick={() => props.onChoseComment(props.commentData._id)}>
+        <p className={cn("answer")} onClick={handleChoseComment}>
           Ответить
         </p>
       </div>
