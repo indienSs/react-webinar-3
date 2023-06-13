@@ -12,7 +12,7 @@ function Comment(props) {
   const formatedDate = dateFormat(props.commentData.dateCreate);
 
   return (
-    <div style={{paddingLeft: props.commentData.level < 14 ? props.commentData.level * 30 : 390}}>
+    <div style={{paddingLeft: props.commentData.level < 11 ? props.commentData.level * 30 : 300}}>
       <div className={cn()}>
         <div className={cn("info")}>
           <p className={cn(props.userId === props.commentData.author._id ? "chosen-user" : "user")}>{props.commentData.author.profile.name}</p>
@@ -32,6 +32,7 @@ function Comment(props) {
         onChoseComment={props.onChoseComment}
         articleId={props.articleId}
         hasChild={props.hasChild}
+        answerRef={props.answerRef}
       />
       <EnterRequirement
         visible={!props.exists && props.commentData._id === props.chosenComment}
@@ -39,6 +40,7 @@ function Comment(props) {
         onChoseComment={props.onChoseComment}
         onNavigate={props.onNavigate}
         hasChild={props.hasChild}
+        answerRef={props.answerRef}
       />
     </div>
   );
@@ -68,6 +70,7 @@ Comment.propTypes = {
   articleId: PropTypes.string,
   userId: PropTypes.string,
   hasChild: PropTypes.bool,
+  answerRef: PropTypes.oneOfType([PropTypes.shape({current: PropTypes.instanceOf(Element)})]),
   chosenComment: PropTypes.oneOfType([PropTypes.string, PropTypes.oneOf([null])]),
 };
 
@@ -75,7 +78,7 @@ Comment.defaultProps = {
   chosenComment: null,
   exists: false,
   articleId: "",
-  hasChild: false,
+  hasChild: true,
   onSendComment: () => {},
   onChoseComment: () => {},
   onNavigate: () => {},
