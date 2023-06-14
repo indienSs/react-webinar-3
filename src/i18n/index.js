@@ -11,9 +11,6 @@ class I18nService {
     this.config = config;
     this.listeners = [];
     this.language = this.config.language || "ru";
-    this.translate = this.translate.bind(this);
-    this.setLanguage = this.setLanguage.bind(this);
-    this.subscribe = this.subscribe.bind(this);
   };
 
   /**
@@ -43,7 +40,7 @@ class I18nService {
    */
   setLanguage(lang = "ru") {
     this.language = lang;
-    console.log("Смена язык на", this.language)
+    for (const listener of this.listeners) listener(this.defaultLanguage);
   }
 
   /**
