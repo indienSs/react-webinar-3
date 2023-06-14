@@ -1,4 +1,4 @@
-import translate from "./translate";
+import * as translations from './translations';
 
 class I18nService {
 
@@ -9,26 +9,54 @@ class I18nService {
   constructor(services, config = {}) {
     this.services = services;
     this.config = config;
-    this.lang = "ru";
-    this.t = this.t.bind(this);
-    this.setLang = this.setLang.bind(this);
+    this.listeners = [];
+    this.language = this.config.language || "ru";
+    this.translate = this.translate.bind(this);
+    this.setLanguage = this.setLanguage.bind(this);
+    this.subscribe = this.subscribe.bind(this);
   };
 
   /**
-   * Функция для локализации текстов с замыканием на код языка
-   * @param {string} text 
-   * @param {number} number 
+   * Перевод фразу по словарю
+   * @param lang {String} Код языка
+   * @param text {String} Текст для перевода
+   * @param [plural] {Number} Число для плюрализации
+   * @returns {String} Переведенный текст
    */
-  t(text, number) {
-    return translate(this.lang, text, number);
+  translate(lang = this.language, text, plural) {
+    let result = translations[lang] && (text in translations[lang])
+      ? translations[lang][text]
+      : text;
+  
+    if (typeof plural !== 'undefined'){
+      const key = new Intl.PluralRules(lang).select(plural);
+      if (key in result) {
+        result = result[key];
+      }
+    }
+    return result;
   }
 
   /**
    * Установка языка перевода
    * @param lang {String} выбор локали
    */
-  setLang(lang = "ru") {
-      this.lang = lang;
+  setLanguage(lang = "ru") {
+    this.language = lang;
+    console.log("Смена язык на", this.language)
+  }
+
+  /**
+   * Подписка слушателя на изменения состояния
+   * @param listener {Function}
+   * @returns {Function} Функция отписки
+   */
+  subscribe(listener) {
+    this.listeners.push(listener);
+    // Возвращается функция для удаления добавленного слушателя
+    return () => {
+      this.listeners = this.listeners.filter(item => item !== listener);
+    }
   }
 }
 

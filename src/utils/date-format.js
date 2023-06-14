@@ -1,5 +1,7 @@
 /**
  * Форматирование даты под "ру" локаль
+ * @param {Date} date
+ * @returns {string}
  */
 export default function dateFormat(date) {
 

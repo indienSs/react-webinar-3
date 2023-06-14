@@ -2,6 +2,7 @@
  * Ищем id дочернего элемента комментария
  * @param {Object[]} arr 
  * @param {string} id 
+ * @returns {string | null}
  */
 export default function findChildId(arr, id) {
 
